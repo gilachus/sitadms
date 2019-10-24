@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contenido %}
+<h3>Revisión Solicitud</h2>
+<div class="card">
+  <div class="card-header d-flex justify-content-between">
+    <span>Solicitud No. {{solicitud.id}}</span>
+    <strong class="">{{ solicitud.situacion|title }}</strong>
+    <em class="">{{ solicitud.fecha_creacion|date:"M d, Y" }}</em>
+  </div>
+  <div class="card-body">
+    <div class="row card-title">
+      <div class="col-lg-4">Funcionario: <em>{{ solicitud.empleado.nombre_completo }}</em></div>
+      <div class="col-lg-4">Cargo: <em>{{ solicitud.empleado.cargo }}</em></div>
+      <div class="col-lg-4">Tipo Vinculación: <em>{{ solicitud.empleado.tipo_vinculacion }}</em></div>
+    </div>
+    <div class="row card-text">
+      <div class="col-3">Demás datos solicitud...</div>
+      <div class="col-12">
+        <a href="{{solicitud.soportes.url}}">Soportes</a>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<div class="row justify-content-center">
+  <div class="col-4 text-center">
+    <a href="{% url 'situacionesadms:rechazar' solicitud.id %}" class="btn btn-dark btn-block" title="Rechazar"><i class="fas fa-times"></i></a>
+  </div>
+  {% if user.empleado.tipo_acceso == 2 %}
+  <div class="col-4 text-center">
+    <button href="#" class="btn btn-dark btn-block" title="Estudio de Perfil"><i class="fas fa-users"></i></button>
+  </div>
+  {% endif %}
+  <div class="col-4 text-center">
+    <form action="{% url 'situacionesadms:aceptar' %}" method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="acceso" value="{{user.empleado.tipo_acceso}}">
+      <button class="btn btn-dark btn-block" type="submit" value="" title="Aceptar"><i class="fas fa-check"></i></button>
+    </form>
+  </div>
+</div>
+{% endblock %}

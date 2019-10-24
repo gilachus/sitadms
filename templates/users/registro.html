@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block contenido %}
+<div>
+    <form action="{% url 'users:registro' %}" method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Registro</legend>
+            {% for field in form %}
+            <div class="fieldWrapper">
+                {% if field.errors %}
+                <div class="alert alert-danger">{{ field.errors }}</div>
+                {% endif %}
+                <b>{% if field.id_for_label == 'id_username' %} 
+                    <label for="id_username">Cédula:</label> 
+                    {% else %}
+                    {{ field.label_tag }}
+                    {% endif %}
+                </b> {{ field }}
+            {% if field.help_text %}
+            <p class="help">{{ field.help_text|safe }}</p>
+            {% endif %}
+            </div>
+            {% endfor %}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-dark" type="submit">Registrar</button>
+        </div>
+    </form>
+    <div class="">
+        <small class="text-muted">¿Ya estás registrado? <a class="ml-2" href="#">Ingresar</a></small>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+</script>
+{% endblock %}

@@ -1,0 +1,48 @@
+/* gris claro #D9DED7, amarillo (#FFCC00,FFC107,FFC825) gris oscuro #10151C, #0B0B0B, 0D1116*/
+.btn-dark:hover, .btn-outline-dark:hover, .institucional:hover {
+    color: rgb(240, 200, 41)!important; 
+    /*background-color: #10151C;*/
+}
+.institucional {
+    /*color: #fff;*/
+    color: rgb(255, 255, 255)
+    /* background-color: #10151C; */
+}
+/* .btn-outline-warning {
+    
+} */
+.bgclaro{
+    background-color: #fff;
+    opacity: 1;
+}
+body {
+    background-color: white;/*rgb(230, 230, 230);*/
+    color: #10151C;
+    /* background: url("../img/udc.jpg") cover no-repeat !important;  */
+}
+html, 
+body {
+    height: 100%;
+}/* 
+.fill { 
+    min-height: 90vh;
+} */
+.bg-dark {
+    background-color: #2c3531;/*#1a1a1d;*//*#d79922 !important;*/ /*#10151C !important;*/
+}
+.titulo-crema{
+    color: #ffcb9a;
+}
+.bg-yellow {
+    background-color: #FFCC00 !important;
+}
+.text-yellow {
+    color: #FFCC00 !important;
+}
+.fullalto {
+    min-height: 82%;
+}/*  */
+.popover-body{    
+    background-color: rgba(240, 200, 41,0.2);
+}
+

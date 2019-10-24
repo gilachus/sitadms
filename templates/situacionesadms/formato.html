@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block contenido %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="row">
+            <h3 class="col-12">
+                <a class="text-decoration-none" href="{% url 'situacionesadms:selecciona' %}">
+                    <i class="text-info h3 fas fa-angle-left ml-1"></i></a>
+                Solicitud</h3>
+            <div class="col-8">
+                <spam tabindex="0" role="button" data-toggle="popover" data-trigger="focus" data-placement="bottom"
+                    data-content="{{nota_situacion}}">
+                    <i class="fas fa-info-circle mx-1 text-warning rounded-circle"></i>
+                </spam>
+                <strong>{{ solicitud|title }}</strong>
+            </div>
+            <div class="col-4 text-right"><em>{{ fecha|date:"M d, Y" }}</em></div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col">
+                <form action="." method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <fieldset class="form-group">
+                        <legend class="border-bottom mb-4 ">
+                        </legend>
+                        {% include 'situacionesadms/basicform1.html' %}
+                        {% include 'situacionesadms/basicform4.html' %}
+                        {% include 'situacionesadms/basicform.html' %}
+
+                        {% for field in form %}
+                        {% if field.id_for_label in "id_dias_permiso id_fecha_i id_fecha_f id_nombre_del_evento id_ciudad id_pais id_asiste_en_calidad id_nombre_encargo id_apellido_encargo id_cargo_encargo id_resolucion_vaciones id_no_dias_a_reservar" %}
+                        <!--includes arriba y abajo-->
+                        {% else %}
+                        <div class="form-group">
+                            {{ field.errors }}
+                            {{ field.label_tag }} {{ field }}
+                            {% if field.help_text %}
+                            <p class="help">{{ field.help_text|safe }}</p>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        {% include 'situacionesadms/basicform2.html' %}
+                        {% include 'situacionesadms/basicform3.html' %}
+                    </fieldset>
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <button class="btn btn-dark btn-block" type="submit">Enviar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

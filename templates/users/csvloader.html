@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+<div class="pt-2">
+    <form action="{% url 'users:csvloader' %}" method="POST" enctype="multipart/form-data" class="form-horizontal">
+    {% csrf_token %}
+    <fieldset class="form-group">
+        <div class="fieldWrapper">
+            <div class="form-group">
+                <label for="name" class="">Modelo: </label>
+                <select name="modelo" class="form-control">
+                    <option value="1">empleados</option>
+                    <option value="2">cargos</option>
+                    <option value="3">sede/dependencia</option>
+                    <option value="4">vinculación</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="name" class="">Archivo (csv): </label>
+                <input type="file" name="csv_file" id="csv_file" required="True" class="form-control">
+            </div>
+        </div>
+    </fieldset>
+    <div class="form-group">
+        <button class="btn btn-dark"> <span class="glyphicon glyphicon-upload"></span>Subir</button>
+    </div>
+</form>
+</div>
+
+{% endblock %}

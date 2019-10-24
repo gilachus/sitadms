@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contenido %}
+<h3>Rechazo de Solicitud No. {{ solicitud.id }}</h3>
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form_rechazo.as_p }}
+    <div class="form-group">
+        <div class="row">
+            <div class="col-6">
+                <a href="{% url 'situacionesadms:revision_solicitud' solicitud.id %}" class="btn btn-dark btn-block" title="Regresar">
+                <i class="text-info fas fa-angle-left ml-1"></i></a>
+            </div>
+            <div class="col-6">
+                <button class="btn btn-dark btn-block" type="submit" title="Enviar respuesta">Enviar</button>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+<!--ejemplo submit afuera-->
+<!-- 
+<form id="CreateForm" action="/create" method="post">
+    <input type="text" name="foo" />
+</form>
+
+<button type="submit" form="CreateForm">Enviar</button> 
+-->

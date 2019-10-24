@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block contenido %}
+<div class="row">
+    <div class="col px-2">
+        <h3 title="Escoga la Situación Aministrativa que desea tramitar">Tipo de Solicitud</h3>
+    </div>
+    <div class="col text-right">
+        <button type="button" class="btn btn-warning" data-toggle="modal"
+            data-target=".situacion-vinculacion-modal-xl">Tabla Situación/Vinculación</button>
+    </div>
+</div>
+<br>
+<div class="row justify-content-start mt-2">
+    {% for situacion in situaciones %}
+    <div class="col-lg-3 p-1">
+        <a href="{% url 'situacionesadms:formato' situacion.slug %} " class="btn btn-outline-dark btn-block"
+            style="height: 100%;">{{situacion.nombre}}</a>
+    </div>
+    {% endfor %}
+    <!--menu situacion.txt-->
+</div>
+
+<!-- Modal -->
+<div class="modal fade situacion-vinculacion-modal-xl" tabindex="-1" role="dialog"
+    aria-labelledby="situaciones-vinculacion" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img src="{% static 'img/situacion-vinculacion.png' %}" class="img-fluid"
+                    alt="tabla situaciones administrativas según vinculación funcionario">
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

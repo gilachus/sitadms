@@ -1,0 +1,28 @@
+{% if form.ciudad %}
+<em class="text-secondary">Datos comisión</em>
+{{ form.non_field_errors }}
+<div class="form-row">
+    <div class="form-group col">
+        {{ form.nombre_del_evento.errors }}
+        {{ form.nombre_del_evento.label_tag }}
+        {{ form.nombre_del_evento }}
+    </div>
+    <div class="form-group col">
+        {{ form.asiste_en_calidad.errors }}
+        {{ form.asiste_en_calidad.label_tag }}
+        {{ form.asiste_en_calidad }}
+    </div>
+</div>
+<div class="form-row">
+    <div class="form-group col">
+        {{ form.ciudad.errors }}
+        {{ form.ciudad.label_tag }}
+        {{ form.ciudad }}
+    </div>
+    <div class="form-group col">
+        {{ form.pais.errors }}
+        {{ form.pais.label_tag }}
+        {{ form.pais }}
+    </div>
+</div>
+{% endif %}

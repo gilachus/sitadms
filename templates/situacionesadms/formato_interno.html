@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contenido %}
+<h3>Registro {{slug}}</h3>
+<hr>
+<form action="">
+    {{ form_empleado.as_p }}
+    {{ form_situacion.as_p }}
+</form>
+{% endblock %}

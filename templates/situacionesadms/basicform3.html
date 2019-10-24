@@ -1,0 +1,23 @@
+{% if form.nombre_encargo %}
+<em class="text-secondary">¿Carrera Administrativa? ¿Dejar encargo?</em>
+<br>
+
+{{ form.non_field_errors }}
+<div class="form-row">
+    <div class="form-group col">
+        {{ form.nombre_encargo.errors }}
+        {{ form.nombre_encargo.label_tag }}
+        {{ form.nombre_encargo }}
+    </div>
+    <div class="form-group col">
+        {{ form.apellido_encargo.errors }}
+        {{ form.apellido_encargo.label_tag }}
+        {{ form.apellido_encargo }}
+    </div>
+    <div class="form-group col">
+        {{ form.cargo_encargo.errors }}
+        {{ form.cargo_encargo.label_tag }}
+        {{ form.cargo_encargo }}
+    </div>
+</div>
+{% endif %}

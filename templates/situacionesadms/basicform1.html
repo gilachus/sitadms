@@ -1,0 +1,10 @@
+{% if form.dias_permiso %}
+{{ form.non_field_errors }}
+<div class="form-row">
+    <div class="form-group col">
+        {{ form.dias_permiso.errors }}
+        {{ form.dias_permiso.label_tag }}
+        {{ form.dias_permiso }}
+    </div>
+</div>
+{% endif %}
