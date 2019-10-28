@@ -119,12 +119,12 @@ class Solicitud(models.Model):
     # -------checks------------------------------------------------------------------------------------ 
     va_a_vice = models.PositiveIntegerField(choices=VICE, null=True, blank=True)
     check_jefe_inmediato = models.BooleanField(default=False)
-    check_asistente_RH = models.BooleanField(default=False)  # primera revisión 
-    check_asistente2_RH = models.BooleanField(default=False) # sabaticos y comisiones > 6 meses - convenios
+    check_asistente_OAGHDP = models.BooleanField(default=False)  # primera revisión 
+    check_asistente2_OAGHDP = models.BooleanField(default=False) # sabaticos y comisiones > 6 meses - convenios
     check_asistente_AL = models.BooleanField(default=False)  # revisa disfrute de vaciones
     check_jefe_AL = models.BooleanField(default=False)       # aprueba disfrute de vaciones
-    check_licencias = models.BooleanField(default=False)     # licencia incapacidad, maternidad, paternindad, luto
-    check_jefe_RH = models.BooleanField(default=False)       # revisa todo
+    check_abogado_AL = models.BooleanField(default=False)     # licencia incapacidad, maternidad, paternindad, luto
+    check_jefe_OAGHDP = models.BooleanField(default=False)       # revisa todo
     check_planeacion = models.BooleanField(default=False)    # horarios profesores
     check_seleccion = models.BooleanField(default=False)     # caso de encargo
     check_vice_doc = models.BooleanField(default=False)      # se da por notificado
@@ -165,6 +165,24 @@ class Solicitud(models.Model):
     #     super(Solicitud, self).save()
 
 # post_delete.connect(file_cleanup, sender=Image, dispatch_uid="gallery.image.file_cleanup")
+      
+
+class DetalleRechazo(models.Model):
+    solicitud = models.ForeignKey(Solicitud, on_delete=models.CASCADE)
+    motivo = models.TextField(help_text="<em>Describa las razones por las cual se rechaza</em>")
+    fecha = models.DateTimeField(auto_now_add=True)
+    fecha_update = models.DateTimeField(auto_now=True)
+    responsable = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    visto = models.BooleanField(default=False)
+    #TODO usuario que lo rechaza
+
+    def __str__(self):
+        return "{}".format(self.solicitud)
+
+
+class Encargo(models.Model):
+    solicitud = models.OneToOneField(Solicitud, on_delete=models.CASCADE)
+    funcionario_encargo = models.ForeignKey(Empleado, on_delete=models.SET_NULL, null=True)
 
 
 class Reintegro(models.Model):
@@ -177,23 +195,13 @@ class Reintegro(models.Model):
 
     def __str__(self):
         return "(R) {}".format(self.situacion)
-        
 
-class DetalleRechazo(models.Model):
-    solicitud = models.ForeignKey(Solicitud, on_delete=models.CASCADE)
-    motivo = models.TextField(help_text="<em>Describa las razones por las cual se rechaza</em>")
-    fecha = models.DateTimeField(auto_now_add=True)
-    fecha_update = models.DateTimeField(auto_now=True)
-    responsable = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    #TODO usuario que lo rechaza
-
+class CartaEstemporaneo(models.Model):
+    reintegro = models.ForeignKey(Reintegro, on_delete=models.CASCADE)
+    redaccion = models.TextField()
+    visto = models.BooleanField(default=False)
     def __str__(self):
-        return "{}".format(self.solicitud)
-
-
-class Encargo(models.Model):
-    solicitud = models.OneToOneField(Solicitud, on_delete=models.CASCADE, blank=True)
-    funcionario_encargo = models.ForeignKey(Empleado, on_delete=models.SET_NULL, null=True, blank=True)
+        return "reintegro-estemporaneo: {}".format(self.reintegro.id)
 
 
     

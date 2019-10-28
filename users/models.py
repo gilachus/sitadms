@@ -27,7 +27,7 @@ class Cargo(models.Model):
 
 class Empleado(models.Model): # asistente_2 -> sabaticos y comisiones > 6 meses
     ACCESO = [(1, "simple"), (2, "asistente_OAGHDP"), (3, "asistente2_OAGHDP"), (4, "jefe_OAGHDP"), 
-    (5, "luto_enfermedad_paternidad_maternidad_AL"), (6, "vacaciones_AL"), (7, "jefe_AL"), (8, "seleccion"), 
+    (5, "abogado_AL"), (6, "vacaciones_AL"), (7, "jefe_AL"), (8, "seleccion"), 
     (9, "planeacion"), (10, "vice_adm"), (11, "vice_doc"), (12, "comunicacion_AL")]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     tipo_vinculacion = models.ForeignKey(TipoVinculacion, on_delete=models.SET_NULL, null=True, blank=True)

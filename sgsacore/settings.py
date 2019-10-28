@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'cuser',
 ]
 
+## pip install django-session-timeout
 # SESSION_EXPIRE_SECONDS = 1800
 # SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 
@@ -171,7 +172,7 @@ STATIC_URL = '/static/'
 ## para tener una sola carpeta afuera para los static
 
 ## revisar en deploy
-# STATIC_ROOT = os.path.join(BASE_DIR,"static")
+# STATIC_ROOT = os.path.join(BASE_DIR,"static") #'/home/.../staticfiles'
 STATICFILES_DIRS = os.path.join(BASE_DIR, "static"),
 
 

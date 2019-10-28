@@ -131,32 +131,34 @@ def solicitudes_entrantes(request):
     if not valida_empleado(request):
         if not valida_acceso(request):
             return redirect('users:inicio')
-    
     user = request.user
     estados = ESTADO
-    solicitudes = Solicitud.objects.all().filter(estado=1)
-
+    base = Solicitud.objects.all().filter(estado=1)
+    solicitudes = None
     ## Vacaciones
     if user.empleado.tipo_acceso == 6: 
-        solicitudes = solicitudes.filter(Q(situacion__nombre="reserva de vacaciones") | 
+        solicitudes = base.filter(Q(situacion__nombre="reserva de vacaciones") | 
         Q(situacion__nombre="disfrute de vacaciones reservadas"), Q(check_asistente_al=True))
     
     ## Jefe Vacaciones
     elif user.empleado.tipo_acceso == 7:
-        solicitudes = solicitudes.filter(Q(situacion__nombre="reserva de vacaciones") | 
+        solicitudes = base.filter(Q(situacion__nombre="reserva de vacaciones") | 
         Q(situacion__nombre="reserva de vacaciones"), Q(check_asistente_AL=True) & Q(check_jefe_AL=False))
     
     ## luto enfermedad paternidad maternidad 
     elif user.empleado.tipo_acceso==5:
-        solicitudes = solicitudes.filter(Q(situacion__nombre="licencia por enfermedad") | Q(situacion__nombre="licencia por maternidad") |
+        solicitudes = base.filter(Q(situacion__nombre="licencia por enfermedad") | Q(situacion__nombre="licencia por maternidad") |
         Q(situacion__nombre="licencia por paternidad") | Q(situacion__nombre="licencia por luto")).exclude(Q(check_licencias=True))
 
-    ## Asistente OAJHDP
+    ## Asistente OAGHDP
     elif user.empleado.tipo_acceso == 2:
-        solicitudes = solicitudes.exclude(Q(situacion__nombre="reserva de vacaciones") | Q(situacion__nombre="disfrute de vacaciones reservadas") , 
+        solicitudes = base.exclude(Q(situacion__nombre="reserva de vacaciones") | Q(situacion__nombre="disfrute de vacaciones reservadas") , 
         Q(check_jefe_AL=False) & Q(check_jefe_AL=False)).exclude(Q(situacion__nombre="licencia por enfermedad") | Q(situacion__nombre="licencia por maternidad") |
         Q(situacion__nombre="licencia por paternidad") | Q(situacion__nombre="licencia por luto"), Q(check_licencias=False))
         
+    ## Jefe OAGHDP
+    elif user.empleado.tipo_acceso == 4:
+        solicitudes = base.filter(Q(check_asistente_OAGHDP), Q(requiere_estudio_perfil=True) & Q(check_seleccion=True))
     
     context = {
         'solicitudes': solicitudes.order_by('-fecha_creacion'),
@@ -207,8 +209,11 @@ def retorna_disabled_form(slug):
 
 @login_required
 def rechazar(request,id_solicitud):
+    """registrar solicitudes con errores"""
     if not valida_empleado(request):
-        return redirect('users:inicio')
+        if not valida_acceso(request):
+            return redirect('users:inicio')
+    
     solicitud = get_object_or_404(Solicitud, pk=id_solicitud)
     form_solicitud = retorna_disabled_form(solicitud.situacion.slug)
     if request.method == 'POST':
@@ -233,13 +238,19 @@ def rechazar(request,id_solicitud):
 
 
 @login_required
-def aceptar(request):
+def aceptar(request, id_solicitud):
     if not valida_empleado(request):
-        return redirect('users:inicio')
-    if request.method=='POST':
-        print(request.POST.get('acceso'))
-    return redirect('users:inicio')
+        if not valida_acceso(request):
+            return redirect('users:inicio')
+    solicitud = get_object_or_404(Solicitud, pk=id_solicitud)
+    if request.user.empleadp.acceso == 2:
+        pass
+
+    return redirect('situcionesadms:')
     
+def requiere_estudio_perfil(self):
+    pass
+
 
 @login_required
 def editar_solicitud(request, id):
