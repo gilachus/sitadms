@@ -25,4 +25,4 @@ admin.site.register(SituacionAdministrativa, SituacionAdmin)
 admin.site.register(Solicitud, SolicitudAdmin)
 admin.site.register(Reintegro)
 admin.site.register(DetalleRechazo)
-
+# commit?
