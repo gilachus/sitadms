@@ -17,9 +17,10 @@ from .funciones_extra import valida_empleado, valida_acceso, ESTADO, notas_situa
 from django.db.models import Q
 
 
-## seleccionar el tipo de situación a diligenciar
+## sección usuario básico
 @login_required
 def selecciona(request):
+    """ seleccionar el tipo de situación a diligenciar"""
     if not valida_empleado(request):
         return redirect('users:inicio')
         
@@ -124,7 +125,7 @@ def mis_solicitudes(request):
     }
     return render(request, 'situacionesadms/mis_solicitudes.html', context)
 
-
+## sección solicitudes
 @login_required
 def solicitudes_entrantes(request):
     """Dependiento el perfil del usuario se mostrara un listado"""
@@ -159,13 +160,18 @@ def solicitudes_entrantes(request):
     ## Jefe OAGHDP
     elif user.empleado.tipo_acceso == 4:
         solicitudes = base.filter(Q(check_asistente_OAGHDP), Q(requiere_estudio_perfil=True) & Q(check_seleccion=True))
+    ## vice doc
+    elif user.empleado.tipo_acceso == 10:
+        solicitudes = base.filter(Q(check_jefe_OAGHDP=True) & q(va_a_vice=1))
+    ## vice adm
+    elif user.empleado.tipo_acceso == 11:
+        solicitudes = base.filter(Q(check_jefe_OAGHDP=True) & q(va_a_vice=2))
     
     context = {
         'solicitudes': solicitudes.order_by('-fecha_creacion'),
         'estados': estados,
-        }
+    }
     return render(request, 'situacionesadms/solicitudes_entrantes.html', context)
-
 
 @login_required
 def revision_solicitud(request, id):
@@ -255,9 +261,9 @@ def requiere_estudio_perfil(self):
 @login_required
 def editar_solicitud(request, id):
     pass
+## ----sección reintegro
 
-
-## ----sabático - comision mayor 6 meses----
+## ----sección sabático - comision mayor 6 meses----
 @login_required
 def selecciona_interno(request):
     if not valida_empleado(request):
@@ -277,20 +283,20 @@ def formato_interno(request, slug):
         empleado_form = EmpleadoForm(request.POST)
     return render(request, 'situacionesadms:formato_interno')
 
+## ---------------------------------------------------------------------------------------------
+def no_reintegro(id_solicitud):
+    """poner que no requiere reintegro"""
+    solicitud = Solicitud.get_object_or_404(id=id_solicitud)
+    solicitud.requiere_reintegro = False
+    solicitud.save()
+
+def si_reintegro(id_solicitud):
+    """poner que si requiere reintegro"""
+    solicitud = Solicitud.get_object_or_404(id=id_solicitud)
+    solicitud.requiere_reintegro = True
+    solicitud.save()
 
 ## ----extra------------------------------------------------------------------------------------
-@login_required
-class DescargarArchivoView(View):
-    def post(self, request, *args, **kwargs):
-        try:
-            solicitud = Solicitud.objects.get(pk=request.POST['id_solicitud'])
-        except:
-            messages.error("problemas con el archivo")
-        response = HttpResponse(solicitud.soporte, content_type='text/plain')
-        response['Content-Disposition'] = 'attachment; filename="%s"' % solicitud.soporte
-        return response
-
-
 @login_required
 def llenar_tipos_situaciones(request):
     if request.user.is_superuser:
@@ -303,7 +309,7 @@ def llenar_tipos_situaciones(request):
         "reserva de vacaciones", "disfrute de vacaciones reservadas", 
         "reserva de días compensatorios", "disfrute de días compensatorios", 
         "licencia por enfermedad", "licencia por maternidad", "licencia por paternidad", "licencia por luto", 
-        "licencia deportiva", "modificación", "año sabático", "comisión de estudio mayor 6 meses"]
+        "licencia deportiva", "año sabático", "comisión de estudio mayor 6 meses"]
 
         vinculacion = [
             "Empleado Público Docente", "Docente Ocasional", "Docente de Cátedra", 
@@ -313,3 +319,15 @@ def llenar_tipos_situaciones(request):
         for vin in vinculacion:
             obj2, created2 = TipoVinculacion.objects.get_or_create(nombre=vin)
     return redirect('users:inicio')
+
+
+@login_required
+class DescargarArchivoView(View):
+    def post(self, request, *args, **kwargs):
+        try:
+            solicitud = Solicitud.objects.get(pk=request.POST['id_solicitud'])
+        except:
+            messages.error("problemas con el archivo")
+        response = HttpResponse(solicitud.soporte, content_type='text/plain')
+        response['Content-Disposition'] = 'attachment; filename="%s"' % solicitud.soporte
+        return response

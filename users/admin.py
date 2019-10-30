@@ -17,7 +17,8 @@ class EmpleadoInline(admin.StackedInline):
 
 class CustomUserAdmin(UserAdmin):
     inlines = (EmpleadoInline, )
-
+    
+    # --------ejemplo de mostrar lo que devuelve un método (get_location)-----------------------
     # list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'get_location')
     # list_select_related = ('profile', )
 

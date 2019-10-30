@@ -13,16 +13,26 @@ class SolicitudAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'situacion', 'empleado', 'estado', 'fecha_i', 'fecha_f', 'fecha_creacion']
     list_display_links = ['situacion']
     list_filter = ['situacion']
-    search_fields = ['empleado']
+    search_fields = ['empleado__user__firstname','empleado__user__lastname','emplado__user__username']
     # date_hierarchy = 'fecha_creacion'
+
+    ##--------------crear secciones dentro del admin form
+    # fieldsets = (
+    #     ('checks', {
+    #         'fields': ('check_jefe_inmediato', 'check_asistente_OAGHDP')
+    #     }),
+    # )
+
     class Meta:
         model = Solicitud
-
-
-admin.site.register(TipoResolucion)
-admin.site.register(Resolucion)
+    
+    
 admin.site.register(SituacionAdministrativa, SituacionAdmin)
 admin.site.register(Solicitud, SolicitudAdmin)
 admin.site.register(Reintegro)
 admin.site.register(DetalleRechazo)
 # commit?
+
+##---
+admin.site.register(TipoResolucion)
+admin.site.register(Resolucion)

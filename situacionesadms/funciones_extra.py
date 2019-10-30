@@ -4,7 +4,8 @@ from django.utils import timezone
 from datetime import datetime
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
-from .models import Empleado
+from users.models import Empleado
+from django.db.models import Q
 # -método nombre_aleatorio-
 import string
 import random
@@ -67,7 +68,6 @@ def valida_acceso(peticion):
         return False
     
 
-    
 # ---------ejemplo timezone
 # date_filed = models.DateField(default=timezone.now)
 # ---------ejemplo naive to aware

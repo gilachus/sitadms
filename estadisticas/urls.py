@@ -1,8 +1,9 @@
-from .views import estadistica
+from .views import estadisticas, ultimos_encargos
 from django.urls import path
 
-app_name = 'estadistica'
+app_name = 'estadisticas'
 
 urlpatterns = [
-    path('estadisticas/', estadictica, name="estadicticas"),
+    path('estadisticas/', estadisticas, name="estadisticas"),
+    path('ultimos_encargos/', ultimos_encargos, name="ultimos_encargos"),
 ]

@@ -64,7 +64,7 @@ ROOT_URLCONF = 'sgsacore.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -92,12 +92,8 @@ WSGI_APPLICATION = 'sgsacore.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sgsadbx',
-        'USER': 'root',
-        'PASSWORD': '', #Mysqlroot741456
-        'HOST': 'localhost',
-        'PORT': '3306',
         'OPTIONS': {
+            'read_default_file': '/home/jesusgil/test/blog/auth/mysql.cnf',
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         },
     }
@@ -172,7 +168,7 @@ STATIC_URL = '/static/'
 ## para tener una sola carpeta afuera para los static
 
 ## revisar en deploy
-# STATIC_ROOT = os.path.join(BASE_DIR,"static") #'/home/.../staticfiles'
+#STATIC_ROOT = os.path.join(BASE_DIR,"static") #'/home/.../staticfiles'
 STATICFILES_DIRS = os.path.join(BASE_DIR, "static"),
 
 

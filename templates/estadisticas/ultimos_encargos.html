@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block contenido %}
+<div class="row">
+    <div class="col">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">No.</th> <!-- col 1 -->
+                    <th scope="col">Solicita</th> <!-- col 2 -->
+                    <th scope="col">Funcionario encargo</th> <!-- col 3 -->
+                    <th scope="col">FECHA INICIO</th> <!-- col 4 -->
+                    <th scope="col">FECHA FIN</th> <!-- col 5 -->
+                </tr>
+            </thead>
+            <tbody>
+                {%if encargos %}
+                {% for encargo in encargos %}
+                <tr>
+                    <th scope="row">{{ encargo.id }}</th> <!-- col 1 -->
+                    <td>{{ encargo.empleado.nombre_completo }}</td> <!-- col 2 -->
+                    <td>{{ encargo.nombre_encargo }} {{ encargo.apellido_encargo }}</td> <!-- col 3 -->
+                    <td>{{ encargo.fecha_i|date:"SHORT_DATE_FORMAT" }}</td> <!-- col 4 -->
+                    <td>{{ encargo.fecha_f|date:"SHORT_DATE_FORMAT" }}</td> <!-- col 5 -->
+                </tr>
+                {% endfor %}
+                {% else %}
+                <em>no hay encargos</em>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

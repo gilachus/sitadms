@@ -1,0 +1,5 @@
+[client]
+database = 'sgsadbserv'
+user = 'root'
+password = 'Master10)'
+default-character-set = 'utf8'
