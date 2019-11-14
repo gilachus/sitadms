@@ -1,23 +1,26 @@
 {% extends 'base.html' %}
-
 {% load static %}
+
+{% block nombre_pantalla %}
+<h4><i class="mx-2 fas fa-user"></i>Perfil</h4>
+{% endblock %}
 {% block contenido %}
 <div class="row justify-content-center">
     <div class="col-md-8">
         <div class="card">
             <div class="card-body">
                 <div class="card-title">
-                  <h3>Información</h3>  
+                    Funcionario
                 </div>
                 <div class="card-subtitle mb-2 text-muted">
-                    <i class="fas fa-user"></i> Funcionario
+
                 </div>
-                <br>
                 <div class="card-text">
                     Cedula: {{ user.username }} <br>
                     Nombre: {{ user.first_name }} <br>
                     Apellido: {{ user.last_name }} <br>
                     Cargo: {{ user.empleado.cargo }} <br>
+                    Sede/Dependencia: {{ user.empleado.sede_dependencia }} <br>
                 </div>
             </div>
         </div>

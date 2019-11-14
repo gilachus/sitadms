@@ -125,7 +125,7 @@ def mis_solicitudes(request):
     }
     return render(request, 'situacionesadms/mis_solicitudes.html', context)
 
-## sección solicitudes
+## ----------------------sección gestión--------------------------------------
 @login_required
 def solicitudes_entrantes(request):
     """Dependiento el perfil del usuario se mostrara un listado"""
@@ -141,21 +141,21 @@ def solicitudes_entrantes(request):
         solicitudes = base.filter(Q(situacion__nombre="reserva de vacaciones") | 
         Q(situacion__nombre="disfrute de vacaciones reservadas"), Q(check_asistente_al=True))
     
+    ## luto enfermedad paternidad maternidad 
+    elif user.empleado.tipo_acceso==5:
+        solicitudes = base.filter(Q(situacion__nombre="licencia por enfermedad") | Q(situacion__nombre="licencia por maternidad") |
+        Q(situacion__nombre="licencia por paternidad") | Q(situacion__nombre="licencia por luto")).exclude(Q(check_abogado_AL=True))
+
     ## Jefe Vacaciones
     elif user.empleado.tipo_acceso == 7:
         solicitudes = base.filter(Q(situacion__nombre="reserva de vacaciones") | 
         Q(situacion__nombre="reserva de vacaciones"), Q(check_asistente_AL=True) & Q(check_jefe_AL=False))
-    
-    ## luto enfermedad paternidad maternidad 
-    elif user.empleado.tipo_acceso==5:
-        solicitudes = base.filter(Q(situacion__nombre="licencia por enfermedad") | Q(situacion__nombre="licencia por maternidad") |
-        Q(situacion__nombre="licencia por paternidad") | Q(situacion__nombre="licencia por luto")).exclude(Q(check_licencias=True))
 
     ## Asistente OAGHDP
     elif user.empleado.tipo_acceso == 2:
         solicitudes = base.exclude(Q(situacion__nombre="reserva de vacaciones") | Q(situacion__nombre="disfrute de vacaciones reservadas") , 
         Q(check_jefe_AL=False) & Q(check_jefe_AL=False)).exclude(Q(situacion__nombre="licencia por enfermedad") | Q(situacion__nombre="licencia por maternidad") |
-        Q(situacion__nombre="licencia por paternidad") | Q(situacion__nombre="licencia por luto"), Q(check_licencias=False))
+        Q(situacion__nombre="licencia por paternidad") | Q(situacion__nombre="licencia por luto"), Q(check_abogado_AL=False))
         
     ## Jefe OAGHDP
     elif user.empleado.tipo_acceso == 4:
@@ -173,45 +173,22 @@ def solicitudes_entrantes(request):
     }
     return render(request, 'situacionesadms/solicitudes_entrantes.html', context)
 
+
 @login_required
-def revision_solicitud(request, id):
+def revision_solicitud(request, solicitud_id):
     if not valida_empleado(request):
-        return redirect('users:inicio')
-    solicitud = get_object_or_404(Solicitud, id=id)
+        if not valida_acceso(request):
+            return redirect('users:inicio')
+    solicitud = get_object_or_404(Solicitud, id=solicitud_id)
+    print(solicitud.situacion.nombre)
+    forms = retorna_disabled_form(solicitud.situacion.slug)
+    form = forms(instance=solicitud)
     context = {
-        'solicitud': solicitud
+        'solicitud': solicitud,
+        'form': form
     }
     return render(request, 'situacionesadms/revision_solicitud.html', context)
 
-def retorna_disabled_form(slug):
-    """retorna un form de campos desactivados"""
-
-    dict_forms = {"permiso-remunerado": BasicFormDisabled,
-                "permiso-sindical": BasicFormDisabled,
-                "permiso-laboral": BasicFormDisabled,
-                "comision-de-servicio": BasicFormDisabled,
-                "comision-de-estudio-menor-6-meses": BasicFormDisabled,
-                "comision-de-estudio-mayor-6-meses": BasicFormDisabled,
-                "comision-menor-a-15-dias-viaticos": BasicFormDisabled,
-                "permiso-academico-compensado-interno": BasicFormDisabled,
-                "permiso-academico-compensado-externo": BasicFormDisabled,
-                "permiso-para-ejercer-docencia-universitaria": BasicFormDisabled,
-                "licencia-especial-para-docentes": BasicFormDisabled,
-                "licencia-ordinaria-no-remunerada": BasicFormDisabled,
-                "licencia-no-remunerada-para-adelantar-estudios": BasicFormDisabled,
-                "reserva-de-vacaciones": BasicFormDisabled,
-                "disfrute-de-vacaciones-reservadas": BasicFormDisabled,
-                "reserva-de-dias-compensatorios": BasicFormDisabled,
-                "disfrute-de-dias-compensatorios": BasicFormDisabled,
-                "licencia-por-enfermedad": BasicFormDisabled,
-                "licencia-por-maternidad": BasicFormDisabled,
-                "licencia por paternidad": BasicFormDisabled,
-                "licencia por luto": BasicFormDisabled
-                }
-    if slug in dict_forms:
-        return dict_forms[slug]
-    else:
-        return BasicFormDisabled
 
 @login_required
 def rechazar(request,id_solicitud):
@@ -219,7 +196,6 @@ def rechazar(request,id_solicitud):
     if not valida_empleado(request):
         if not valida_acceso(request):
             return redirect('users:inicio')
-    
     solicitud = get_object_or_404(Solicitud, pk=id_solicitud)
     form_solicitud = retorna_disabled_form(solicitud.situacion.slug)
     if request.method == 'POST':
@@ -234,7 +210,6 @@ def rechazar(request,id_solicitud):
             solicitud.estado = 5 
             solicitud.save()
         return redirect('situacionesadms:solicitudes_entrantes')    
-
     context = {
         'solicitud': solicitud,
         'form_solicitud': form_solicitud(instance=solicitud),
@@ -249,10 +224,26 @@ def aceptar(request, id_solicitud):
         if not valida_acceso(request):
             return redirect('users:inicio')
     solicitud = get_object_or_404(Solicitud, pk=id_solicitud)
-    if request.user.empleadp.acceso == 2:
-        pass
+    acceso = request.user.empleado.acceso
+    if acceso == 6:
+        solicitud.check_asistente_AL = True
+    elif accesoo == 5:
+        solicitud.check_abogado_AL = True
+    elif acceso == 7:
+        solicitud.check_jefe_AL = True
+    elif acceso == 2:
+        solicitud.check_asistente_OAGHDP = True
+    elif acceso == 4:
+        solicitud.user.check_jefe_OAGHDP = True
+    elif acceso == 10:
+        solicitud.user.check_vice_doc = True
+        solicitud.estado = 3
+    elif acceso == 11:
+        solicitud.user.check_vice_adm = True
+        solicitud.estado = 3
 
-    return redirect('situcionesadms:')
+    solicitud.save()
+    return redirect('situcionesadms:solicitudes_entrantes')
     
 def requiere_estudio_perfil(self):
     pass

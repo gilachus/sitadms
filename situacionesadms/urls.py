@@ -14,7 +14,7 @@ urlpatterns = [
     path('mis_solicitudes/', mis_solicitudes, name="mis_solicitudes"),
     ## revisiones
     path('solicitudes_entrantes/', solicitudes_entrantes, name="solicitudes_entrantes"),
-    path('revision_solicitud/<int:id>/', revision_solicitud, name="revision_solicitud"),
+    path('revision_solicitud/<int:solicitud_id>/', revision_solicitud, name="revision_solicitud"),
     path('rechazar/<int:id_solicitud>', rechazar, name="rechazar"),
     path('aceptar/<int:id_solicitud>', aceptar, name="aceptar"),
     path('requiere_estudio_perfil/<int:id_solicitud>', requiere_estudio_perfil, name="requiere_estudio_perfil"),

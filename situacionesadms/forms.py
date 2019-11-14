@@ -33,7 +33,7 @@ class ConJustificacionForm(ModelForm):
             # format="%d-%m-%Y",
             'fecha_i': forms.DateInput(attrs={'class':'form-control', 'placeholder':'seleccione fecha', 'type': 'date'}),
             'fecha_f': forms.DateInput(attrs={'class':'form-control', 'placeholder':'seleccione fecha', 'type': 'date'}),
-            'justificacion': forms.Textarea(attrs={'class':'form-control', 'cols': 80, 'rows': 2, 'class':'form-control', 'autocomplete':'off'}),
+            'justificacion': forms.Textarea(attrs={'class':'form-control', 'cols': 80, 'rows': 2, 'autocomplete':'off'}),
             'soportes': forms.FileInput(attrs={'class':'form-control', 'required':''}),
         }
     
@@ -60,7 +60,7 @@ class JustificacionYEncargoForm(ModelForm):
             'fecha_i': forms.DateInput(attrs={'class':'form-control', 'placeholder':'seleccione fecha', 'type': 'date'}),
             'fecha_f': forms.DateInput(attrs={'class':'form-control', 'placeholder':'seleccione fecha', 'type': 'date'}),
             'soportes': forms.FileInput(attrs={'class':'form-control', 'required':''}),
-            'justificacion': forms.Textarea(attrs={'class':'form-control', 'cols': 80, 'rows': 2, 'class':'form-control', 'autocomplete':'off'}),
+            'justificacion': forms.Textarea(attrs={'class':'form-control', 'cols': 80, 'rows': 2, 'autocomplete':'off'}),
             'nombre_encargo': forms.TextInput(attrs={'class':'form-control', 'autocomplete':'off'}),
             'apellido_encargo': forms.TextInput(attrs={'class':'form-control', 'autocomplete':'off'}),
             'cargo_encargo': forms.TextInput(attrs={'class':'form-control', 'autocomplete':'off'}),
@@ -109,11 +109,11 @@ class ComisionForm(ModelForm):
         widgets = {
             'fecha_i': forms.DateInput(attrs={'class':'form-control', 'placeholder':'seleccione fecha', 'type': 'date'}),
             'fecha_f': forms.DateInput(attrs={'class':'form-control', 'placeholder':'seleccione fecha', 'type': 'date'}),
-            'justificacion': forms.Textarea(attrs={'cols': 80, 'rows': 2, 'class':'form-control', 'autocomplete':'off'}),
+            'justificacion': forms.Textarea(attrs={'class':'form-control', 'cols': 80, 'rows': 2, 'autocomplete':'off'}),
             'soportes': forms.FileInput(attrs={'class':'form-control', 'required':''}),
             'nombre_del_evento': forms.TextInput(attrs={'class':'form-control', 'autocomplete':'off'}),
-            'ciudad': forms.TextInput(attrs={'class':'form-control'}),
-            'pais': forms.TextInput(attrs={'class':'form-control'}),
+            'ciudad': forms.TextInput(attrs={'class':'form-control', 'autocomplete':'off'}),
+            'pais': forms.TextInput(attrs={'class':'form-control', 'autocomplete':'off'}),
             'asiste_en_calidad': forms.Select(attrs={'class':'form-control'}),
             'nombre_encargo': forms.TextInput(attrs={'class':'form-control', 'autocomplete':'off'}),
             'apellido_encargo': forms.TextInput(attrs={'class':'form-control', 'autocomplete':'off'}),
@@ -131,8 +131,8 @@ class ComisionViaticosForm(ModelForm):
             'soportes': forms.FileInput(attrs={'class':'form-control'}),
             'resolucion_viaticos': forms.TextInput(attrs={'class':'form-control', 'type': 'number', 'min': '0', 'autocomplete':'off'}),
             'nombre_del_evento': forms.TextInput(attrs={'class':'form-control', 'autocomplete':'off'}),
-            'ciudad': forms.TextInput(attrs={'class':'form-control'}),
-            'pais': forms.TextInput(attrs={'class':'form-control'}),
+            'ciudad': forms.TextInput(attrs={'class':'form-control', 'autocomplete':'off'}),
+            'pais': forms.TextInput(attrs={'class':'form-control', 'autocomplete':'off'}),
             'asiste_en_calidad': forms.Select(attrs={'class':'form-control'}),
             'nombre_encargo': forms.TextInput(attrs={'class':'form-control', 'autocomplete':'off'}),
             'apellido_encargo': forms.TextInput(attrs={'class':'form-control', 'autocomplete':'off'}),
@@ -149,7 +149,7 @@ class ReservaVacacionesForm(ModelForm):
             'no_dias_a_reservar': forms.NumberInput(attrs={'class':'form-control'}),
             'fecha_i': forms.DateInput(attrs={'class':'form-control', 'placeholder':'seleccione fecha', 'type': 'date'}),
             'fecha_f': forms.DateInput(attrs={'class':'form-control', 'placeholder':'seleccione fecha', 'type': 'date'}),
-            'justificacion': forms.Textarea(attrs={'cols': 80, 'rows': 2, 'class':'form-control', 'autocomplete':'off'}),
+            'justificacion': forms.Textarea(attrs={'class':'form-control', 'cols': 80, 'rows': 2, 'autocomplete':'off'}),
             'soportes': forms.FileInput(attrs={'class':'form-control'}),
         }
 

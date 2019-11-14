@@ -31,8 +31,12 @@ class CustomUserAdmin(UserAdmin):
             return list()
         return super(CustomUserAdmin, self).get_inline_instances(request, obj)
 
+class EmpleadoAdmin(admin.ModelAdmin):
+    list_display = ('user', 'nombre_completo', 'tipo_vinculacion', 'cargo')
+
+
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
-admin.site.register(Empleado)
+admin.site.register(Empleado, EmpleadoAdmin)
 
 
