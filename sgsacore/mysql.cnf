@@ -1,5 +1,5 @@
 [client]
-database = 'sgsadbserv'
-user = 'root'
-password = 'Master10)'
+database = 'sgsadb'
+user = 'jesusgil'
+password = 'Master09)'
 default-character-set = 'utf8'

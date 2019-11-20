@@ -11,6 +11,7 @@ urlpatterns = [
     ## funcionarios
     path('selecciona/', selecciona, name="selecciona"),
     path('formato/<slug:slug>/', formato, name="formato"),
+    path('formato_interno/<slug:slug_interno>', formato_interno, name="formato_interno"),
     path('mis_solicitudes/', mis_solicitudes, name="mis_solicitudes"),
     ## revisiones
     path('solicitudes_entrantes/', solicitudes_entrantes, name="solicitudes_entrantes"),

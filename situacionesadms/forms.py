@@ -128,7 +128,7 @@ class ComisionViaticosForm(ModelForm):
         widgets = {
             'fecha_i': forms.DateInput(attrs={'class':'form-control', 'placeholder':'seleccione fecha', 'type': 'date'}),
             'fecha_f': forms.DateInput(attrs={'class':'form-control', 'placeholder':'seleccione fecha', 'type': 'date'}),
-            'soportes': forms.FileInput(attrs={'class':'form-control'}),
+            'soportes': forms.FileInput(attrs={'class':'form-control', 'required':''}),
             'resolucion_viaticos': forms.TextInput(attrs={'class':'form-control', 'type': 'number', 'min': '0', 'autocomplete':'off'}),
             'nombre_del_evento': forms.TextInput(attrs={'class':'form-control', 'autocomplete':'off'}),
             'ciudad': forms.TextInput(attrs={'class':'form-control', 'autocomplete':'off'}),
@@ -150,7 +150,7 @@ class ReservaVacacionesForm(ModelForm):
             'fecha_i': forms.DateInput(attrs={'class':'form-control', 'placeholder':'seleccione fecha', 'type': 'date'}),
             'fecha_f': forms.DateInput(attrs={'class':'form-control', 'placeholder':'seleccione fecha', 'type': 'date'}),
             'justificacion': forms.Textarea(attrs={'class':'form-control', 'cols': 80, 'rows': 2, 'autocomplete':'off'}),
-            'soportes': forms.FileInput(attrs={'class':'form-control'}),
+            'soportes': forms.FileInput(attrs={'class':'form-control', 'required':''}),
         }
 
 
@@ -163,6 +163,7 @@ class DisfruteVacacionesForm(ModelForm):
             'no_reserva_personal': forms.NumberInput(attrs={'class':'form-control'}),
             'fecha_i': forms.DateInput(attrs={'class':'form-control', 'placeholder':'seleccione fecha', 'type': 'date'}),
             'fecha_f': forms.DateInput(attrs={'class':'form-control', 'placeholder':'seleccione fecha', 'type': 'date'}),
+            'soportes': forms.FileInput(attrs={'class':'form-control', 'required':''}),
             'nombre_encargo': forms.TextInput(attrs={'class':'form-control', 'autocomplete':'off'}),
             'apellido_encargo': forms.TextInput(attrs={'class':'form-control', 'autocomplete':'off'}),
             'cargo_encargo': forms.TextInput(attrs={'class':'form-control', 'autocomplete':'off'}),
@@ -230,3 +231,17 @@ class RechazoForm(ModelForm):
         widgets = {
             'motivo': forms.Textarea(attrs={'class':'form-control', 'cols': 80, 'rows': 2, 'autocomplete':'off'})
         }
+
+
+# Comisión Mayor Seis y Sabático
+class ComisionMayorSeisSabaticoForm(ModelForm):
+    class Meta:
+        model = Solicitud
+        fields = ['fecha_i', 'fecha_f', 'soportes', 'convenio']
+        widgets = {
+            'fecha_i': forms.DateInput(attrs={'class':'form-control', 'placeholder':'seleccione fecha', 'type': 'date'}),
+            'fecha_f': forms.DateInput(attrs={'class':'form-control', 'placeholder':'seleccione fecha', 'type': 'date'}),
+            'soportes': forms.FileInput(attrs={'class':'form-control'}),
+            'convenio': forms.FileInput(attrs={'class':'form-control'}),
+        }
+

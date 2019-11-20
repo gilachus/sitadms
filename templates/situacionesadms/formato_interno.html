@@ -2,10 +2,10 @@
 {% load static %}
 
 {% block contenido %}
-<h3>Registro {{slug}}</h3>
+<h3>Registro de {{ situacion }}</h3>
 <hr>
+<p class="center">Funcionario: {{ funcionario }}</p>
 <form action="">
-    {{ form_empleado.as_p }}
-    {{ form_situacion.as_p }}
+    {{ form.as_p }}
 </form>
 {% endblock %}

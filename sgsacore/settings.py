@@ -1,11 +1,3 @@
-"""
-For more information on this file, see
-https://docs.djangoproject.com/en/2.2/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/2.2/ref/settings/
-"""
-
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -93,7 +85,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
-            'read_default_file': '/home/jesusgil/test/blog/auth/mysql.cnf',
+            'read_default_file': os.path.join(BASE_DIR, "sgsacore/mysql.cnf"), #/home/jesusgil/test/blog/auth/mysql.cnf',
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         },
     }
@@ -168,8 +160,8 @@ STATIC_URL = '/static/'
 ## para tener una sola carpeta afuera para los static
 
 ## revisar en deploy
-#STATIC_ROOT = os.path.join(BASE_DIR,"static") #'/home/.../staticfiles'
-STATICFILES_DIRS = os.path.join(BASE_DIR, "static"),
+STATIC_ROOT = os.path.join(BASE_DIR,"static") #'/home/.../staticfiles'
+STATICFILES_DIRS = os.path.join(BASE_DIR, "staticfiles"),
 
 
 MEDIA_URL = '/media/'

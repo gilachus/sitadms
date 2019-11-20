@@ -67,9 +67,11 @@ def retorna_form(slug):
     
 
 ### retorna_template.txt
+
+## guardar formato de situacion administrativa 
 @login_required
 def formato(request, slug):
-    """lugar donde se llenan los datos de la situacion adm a solicitar"""
+    """método donde se llenan y guardan los datos de la situacion adm solicitada"""
     if not valida_empleado(request):
         return redirect('users:inicio')
     situacion = get_object_or_404(SituacionAdministrativa, slug=slug)
@@ -254,25 +256,32 @@ def editar_solicitud(request, id):
     pass
 ## ----sección reintegro
 
-## ----sección sabático - comision mayor 6 meses----
+## ----situaciones interno sección sabático - comision mayor 6 meses----
 @login_required
 def selecciona_interno(request):
     if not valida_empleado(request):
         return redirect('users:inicio')
+    if request.method == 'POST':
+        pass
+        #TODO buscar funcionarios
     context = {}
     return render(request, 'situacionesadms/selecciona_interno.html', context)
 
 
 @login_required
-def formato_interno(request, slug):
+def formato_interno(request, slug_interno):
     if not valida_empleado(request):
         return redirect('users:inicio')
-    situacion = get_object_or_404(SituacionAdministrativa, slug=slug)
+    situacion = get_object_or_404(SituacionAdministrativa, slug=slug_interno)
     if request.method == 'POST':
-        forms = retorna_form(slug)
+        forms = retorna_form(slug_interno)
         form = forms(request.POST, request.FILES)
         empleado_form = EmpleadoForm(request.POST)
     return render(request, 'situacionesadms:formato_interno')
+
+@login_required
+def listado_interno(request):
+    pass
 
 ## ---------------------------------------------------------------------------------------------
 def no_reintegro(id_solicitud):
