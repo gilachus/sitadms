@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block contenido %}
+
+{% block nombre_pantalla %}
 <div class="row">
     <div class="col px-2">
         <h3 title="Escoga la Situación Aministrativa que desea tramitar">Tipo de Solicitud</h3>
@@ -10,6 +11,9 @@
             data-target=".situacion-vinculacion-modal-xl">Tabla Situación/Vinculación</button>
     </div>
 </div>
+{% endblock %}
+
+{% block contenido %}
 <br>
 <div class="row justify-content-start mt-2">
     {% for situacion in situaciones %}

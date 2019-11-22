@@ -11,7 +11,6 @@ urlpatterns = [
     ## funcionarios
     path('selecciona/', selecciona, name="selecciona"),
     path('formato/<slug:slug>/', formato, name="formato"),
-    path('formato_interno/<slug:slug_interno>', formato_interno, name="formato_interno"),
     path('mis_solicitudes/', mis_solicitudes, name="mis_solicitudes"),
     ## revisiones
     path('solicitudes_entrantes/', solicitudes_entrantes, name="solicitudes_entrantes"),
@@ -19,9 +18,9 @@ urlpatterns = [
     path('rechazar/<int:id_solicitud>', rechazar, name="rechazar"),
     path('aceptar/<int:id_solicitud>', aceptar, name="aceptar"),
     path('requiere_estudio_perfil/<int:id_solicitud>', requiere_estudio_perfil, name="requiere_estudio_perfil"),
-    ## OAGHDP
+    ## interno
     path('selecciona_interno/', selecciona_interno, name="selecciona_interno"),
-    path('formato_interno/<slug:slug>', formato_interno, name="formato_interno"),
+    path('formato_interno/<slug:slug_interno>', formato_interno, name="formato_interno"),
     ## función para lenar bases
     path('llenar/', llenar_tipos_situaciones, name="llenar"),
 ]

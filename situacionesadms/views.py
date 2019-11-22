@@ -127,6 +127,7 @@ def mis_solicitudes(request):
     }
     return render(request, 'situacionesadms/mis_solicitudes.html', context)
 
+
 ## ----------------------sección gestión--------------------------------------
 @login_required
 def solicitudes_entrantes(request):
@@ -138,22 +139,29 @@ def solicitudes_entrantes(request):
     estados = ESTADO
     base = Solicitud.objects.all().filter(estado=1)
     solicitudes = None
-    ## Vacaciones
-    if user.empleado.tipo_acceso == 6: 
-        solicitudes = base.filter(Q(situacion__nombre="reserva de vacaciones") | 
-        Q(situacion__nombre="disfrute de vacaciones reservadas"), Q(check_asistente_al=True))
     
-    ## luto enfermedad paternidad maternidad 
-    elif user.empleado.tipo_acceso==5:
-        solicitudes = base.filter(Q(situacion__nombre="licencia por enfermedad") | Q(situacion__nombre="licencia por maternidad") |
-        Q(situacion__nombre="licencia por paternidad") | Q(situacion__nombre="licencia por luto")).exclude(Q(check_abogado_AL=True))
-
-    ## Jefe Vacaciones
-    elif user.empleado.tipo_acceso == 7:
+    ## revision luto enfermedad paternidad maternidad 
+    if user.empleado.tipo_acceso==5:
+        solicitudes = base.filter(Q(situacion__nombre="licencia por enfermedad") | 
+        Q(situacion__nombre="licencia por maternidad") | Q(situacion__nombre="licencia por paternidad") | 
+        Q(situacion__nombre="licencia por luto")).exclude(Q(check_abogado_AL=True))
+    
+    ## revision Vacaciones
+    elif user.empleado.tipo_acceso == 6: 
         solicitudes = base.filter(Q(situacion__nombre="reserva de vacaciones") | 
-        Q(situacion__nombre="reserva de vacaciones"), Q(check_asistente_AL=True) & Q(check_jefe_AL=False))
+        Q(situacion__nombre="disfrute de vacaciones reservadas")).exclude(Q(check_asistente_al=True))
+        
+    ## Jefe al vaciones y abogado
+    elif user.empleado.tipo_acceso == 7:
+        solicitudes = base.filter((Q(check_asistente_AL=True) | Q(check_abogado_AL=True)) & Q(check_jefe_AL=False) #creo que se puede resumir así
+            #(Q(situacion__nombre="reserva de vacaciones") | Q(situacion__nombre="reserva de vacaciones")) & 
+            #(Q(check_asistente_AL=True) & Q(check_jefe_AL=False)) | 
+            #(Q(situacion__nombre="licencia por enfermedad") | Q(situacion__nombre="licencia por maternidad") |
+            #Q(situacion__nombre="licencia por paternidad") | Q(situacion__nombre="licencia por luto")) & 
+            #(Q(check_abogado_AL=True) & Q(check_jefe_AL=False))
+            )
 
-    ## Asistente OAGHDP
+    ## revision Asistente OAGHDP
     elif user.empleado.tipo_acceso == 2:
         solicitudes = base.exclude(Q(situacion__nombre="reserva de vacaciones") | Q(situacion__nombre="disfrute de vacaciones reservadas") , 
         Q(check_jefe_AL=False) & Q(check_jefe_AL=False)).exclude(Q(situacion__nombre="licencia por enfermedad") | Q(situacion__nombre="licencia por maternidad") |
@@ -161,13 +169,13 @@ def solicitudes_entrantes(request):
         
     ## Jefe OAGHDP
     elif user.empleado.tipo_acceso == 4:
-        solicitudes = base.filter(Q(check_asistente_OAGHDP), Q(requiere_estudio_perfil=True) & Q(check_seleccion=True))
+        solicitudes = base.filter(Q(check_asistente_OAGHDP) | Q(check_jefe_AL) | (Q(requiere_estudio_perfil=True) & Q(check_seleccion=True)))
     ## vice doc
     elif user.empleado.tipo_acceso == 10:
-        solicitudes = base.filter(Q(check_jefe_OAGHDP=True) & q(va_a_vice=1))
+        solicitudes = base.filter(Q(check_jefe_OAGHDP=True) & Q(va_a_vice=1))
     ## vice adm
     elif user.empleado.tipo_acceso == 11:
-        solicitudes = base.filter(Q(check_jefe_OAGHDP=True) & q(va_a_vice=2))
+        solicitudes = base.filter(Q(check_jefe_OAGHDP=True) & Q(va_a_vice=2))
     
     context = {
         'solicitudes': solicitudes.order_by('-fecha_creacion'),
@@ -229,7 +237,7 @@ def aceptar(request, id_solicitud):
     acceso = request.user.empleado.acceso
     if acceso == 6:
         solicitud.check_asistente_AL = True
-    elif accesoo == 5:
+    elif acceso == 5:
         solicitud.check_abogado_AL = True
     elif acceso == 7:
         solicitud.check_jefe_AL = True
@@ -247,6 +255,7 @@ def aceptar(request, id_solicitud):
     solicitud.save()
     return redirect('situcionesadms:solicitudes_entrantes')
     
+
 def requiere_estudio_perfil(self):
     pass
 
@@ -254,36 +263,11 @@ def requiere_estudio_perfil(self):
 @login_required
 def editar_solicitud(request, id):
     pass
+
+
 ## ----sección reintegro
 
-## ----situaciones interno sección sabático - comision mayor 6 meses----
-@login_required
-def selecciona_interno(request):
-    if not valida_empleado(request):
-        return redirect('users:inicio')
-    if request.method == 'POST':
-        pass
-        #TODO buscar funcionarios
-    context = {}
-    return render(request, 'situacionesadms/selecciona_interno.html', context)
-
-
-@login_required
-def formato_interno(request, slug_interno):
-    if not valida_empleado(request):
-        return redirect('users:inicio')
-    situacion = get_object_or_404(SituacionAdministrativa, slug=slug_interno)
-    if request.method == 'POST':
-        forms = retorna_form(slug_interno)
-        form = forms(request.POST, request.FILES)
-        empleado_form = EmpleadoForm(request.POST)
-    return render(request, 'situacionesadms:formato_interno')
-
-@login_required
-def listado_interno(request):
-    pass
-
-## ---------------------------------------------------------------------------------------------
+## -----------extra reintegro-------------------------------------------------------------------
 def no_reintegro(id_solicitud):
     """poner que no requiere reintegro"""
     solicitud = Solicitud.get_object_or_404(id=id_solicitud)
@@ -295,6 +279,48 @@ def si_reintegro(id_solicitud):
     solicitud = Solicitud.get_object_or_404(id=id_solicitud)
     solicitud.requiere_reintegro = True
     solicitud.save()
+
+
+## ----situaciones interno sección comision mayor 6 meses - sabático----
+@login_required
+def selecciona_interno(request):
+    """primero buscar al funcionario y seleccionar el tipo de situacion administrativa(i)"""
+    if not valida_empleado(request):
+        return redirect('users:inicio')
+
+    funcionarios=None
+    if request.method == 'POST':
+        consulta = request.POST.get('pista')
+        if consulta:
+            funcionarios = Empleado.objects.all().filter(Q(user__first_name__icontains=consulta) | Q(user__last_name__icontains=consulta))
+        # funcionarios = Empleado.objects.all().filter(Q(nombre_completo__icontains="") & Q(activo=True))
+    context = {
+        'funcionarios': funcionarios,
+    }
+    print(funcionarios)
+    return render(request, 'situacionesadms/selecciona_interno.html', context)
+
+
+@login_required
+def formato_interno(request, slug_interno):
+    """agregar soportes y convenio para el registro de la sistuacion administrativa(i)"""
+    if not valida_empleado(request):
+        return redirect('users:inicio')
+    situacion = get_object_or_404(SituacionAdministrativa, slug=slug_interno)
+    if request.method == 'POST':
+        forms = retorna_form(slug_interno)
+        form = forms(request.POST, request.FILES)
+        empleado_form = EmpleadoForm(request.POST)
+    return render(request, 'situacionesadms:formato_interno')
+
+@login_required
+def listado_interno(request):
+    """listar ultimas situaciones administrativas(i)"""
+    pass
+
+
+
+
 
 ## ----extra------------------------------------------------------------------------------------
 @login_required

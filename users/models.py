@@ -46,3 +46,6 @@ class Empleado(models.Model): # asistente_2 -> sabaticos y comisiones > 6 meses
     
     def nombre_completo(self):
         return "{} {}".format(self.user.first_name, self.user.last_name)
+
+    def activo(self):
+        return self.user.is_active

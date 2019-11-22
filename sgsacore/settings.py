@@ -160,8 +160,8 @@ STATIC_URL = '/static/'
 ## para tener una sola carpeta afuera para los static
 
 ## revisar en deploy
-STATIC_ROOT = os.path.join(BASE_DIR,"static") #'/home/.../staticfiles'
-STATICFILES_DIRS = os.path.join(BASE_DIR, "staticfiles"),
+STATIC_ROOT = os.path.join(BASE_DIR,"staticfiles") #'/home/.../staticfiles'
+STATICFILES_DIRS = os.path.join(BASE_DIR, "static"),
 
 
 MEDIA_URL = '/media/'
