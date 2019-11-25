@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block nombre_pantalla %}
+{% endblock %}
+
+{% block contenido %}
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th scope="col">No.</th>
+            <th scope="col">Situacion Administrativa</th>
+            <th scope="col">Funcionario</th>
+            <th scope="col">Cédula</th>
+            <th scope="col">Fecha</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if situaciones %}
+        {% for situacion in situaciones %}
+        <tr>
+            <th scope="row">{{ situacion.id }}</th>
+            <td>{{ situacion.situacion.nombre}}</td>
+            <td>{{ situacion.empleado.nombre_completo }}</td>
+            <td>{{ situacion.empleado.user.username }}</td>
+            <td>{{ situacion.fecha_creacion }}</td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+    </tbody>
+</table>
+{% endblock %}

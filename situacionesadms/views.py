@@ -183,7 +183,6 @@ def rechazar(request,id_solicitud):
     if request.method == 'POST':
         rechazo = RechazoForm(request.POST)
         if rechazo.is_valid:
-            print(request.POST.get('motivo'))
             print("rechazado")
             instancia = rechazo.save(commit=False)
             instancia.solicitud = solicitud
@@ -279,24 +278,38 @@ def formato_interno(request, slug_interno, pk):
     if not valida_empleado(request):
         return redirect('users:inicio')
     situacion = get_object_or_404(SituacionAdministrativa, slug=slug_interno)
-    empleado = get_object_or_404(Empleado, pk=pk)
-    forms = retorna_form(slug_interno) 
+    funcionario = get_object_or_404(Empleado, pk=pk)
+    
     if request.method == 'POST':
+        forms = retorna_form(slug_interno) 
         form = forms(request.POST, request.FILES)
-        print(form.cleaned_data['fecha_i'])
+        print('post...')
         if form.is_valid:
-            print("valido")
+            print("válido")
+            formato = form.save(commit=False)
+            formato.empleado = funcionario
+            formato.estado = 3
+            formato.save()
+            messages.success(request, f"registro de <<{situacion.nombre}>> éxitoso ")
+        return redirect('users:inicio')
+    else:
+        forms = retorna_form(slug_interno) 
     context={
         'title': situacion.nombre,
         'form': forms(),
-        'funcionario': empleado 
+        'funcionario': funcionario,
+        'slug': slug_interno 
     }
     return render(request, 'situacionesadms/formato_interno.html', context)
 
 @login_required
 def listado_interno(request):
-    """listar ultimas situaciones administrativas(i)"""
-    pass
+    """listar situaciones administrativas(i)"""
+    situaciones_interno = Solicitud.objects.filter(estado=3).order_by('-fecha_creacion')
+    context = {
+        'situaciones': situaciones_interno
+    }
+    return render(request, 'situacionesadms/listado_interno.html')
 
 
 

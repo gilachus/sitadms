@@ -14,8 +14,8 @@ def retorna_form(slug):
                 "permiso-laboral": PermisoLaboralForm,
                 "comision-de-servicio": ComisionForm,
                 "comision-de-estudio-menor-6-meses": ComisionForm,
-                "comision-de-estudio-mayor-6-meses": ComisionMayorSeisSabaticoForm,
-                "ano-sabatico": ComisionMayorSeisSabaticoForm,
+                "comision-de-estudio-mayor-6-meses": ComisionMayorSeisSabaticoForm, #interno
+                "ano-sabatico": ComisionMayorSeisSabaticoForm, #interno      
                 "comision-menor-a-15-dias-viaticos": ComisionViaticosForm,
                 "permiso-academico-compensado-interno": JustificacionYEncargoForm,
                 "permiso-academico-compensado-externo": JustificacionYEncargoForm,

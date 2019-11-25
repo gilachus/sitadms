@@ -1,6 +1,6 @@
 from .views import (selecciona, formato, mis_solicitudes, 
                     solicitudes_entrantes, revision_solicitud, aceptar, rechazar, requiere_estudio_perfil,
-                    selecciona_interno, formato_interno, 
+                    selecciona_interno, formato_interno, listado_interno, 
                     llenar_tipos_situaciones)
 from django.urls import path
 from django.core.exceptions import PermissionDenied
@@ -21,6 +21,7 @@ urlpatterns = [
     ## interno
     path('selecciona_interno/', selecciona_interno, name="selecciona_interno"),
     path('formato_interno/<slug:slug_interno>/funcionario/<int:pk>', formato_interno, name="formato_interno"),
+    path('listado_interno', listado_interno, name="listado_interno"),
     ## función para lenar bases
     path('llenar/', llenar_tipos_situaciones, name="llenar"),
 ]

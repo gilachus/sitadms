@@ -192,7 +192,7 @@ class ReservaCompensatorio(ModelForm):
             'fecha_i': forms.DateInput(attrs={'class':'form-control', 'placeholder':'seleccione fecha', 'type': 'date'}),
             'fecha_f': forms.DateInput(attrs={'class':'form-control', 'placeholder':'seleccione fecha', 'type': 'date'}),
             'justificacion': forms.Textarea(attrs={'class':'form-control', 'cols': 80, 'rows': 2, 'class':'form-control', 'autocomplete':'off'}),
-            'soportes': forms.FileInput(attrs={'class':'form-control'}),
+            'soportes': forms.FileInput(attrs={'class':'form-control', 'required':''}),
         }
 
 
@@ -206,7 +206,7 @@ class DisfruteCompensatorio(ModelForm):
             'fecha_i': forms.DateInput(attrs={'class':'form-control', 'placeholder':'seleccione fecha', 'type': 'date'}),
             'fecha_f': forms.DateInput(attrs={'class':'form-control', 'placeholder':'seleccione fecha', 'type': 'date'}),
             'justificacion': forms.Textarea(attrs={'class':'form-control', 'cols': 80, 'rows': 2, 'class':'form-control', 'autocomplete':'off'}),
-            'soportes': forms.FileInput(attrs={'class':'form-control'}),
+            'soportes': forms.FileInput(attrs={'class':'form-control', 'required':''}),
         }
 
 
@@ -242,6 +242,6 @@ class ComisionMayorSeisSabaticoForm(ModelForm):
             'fecha_i': forms.DateInput(attrs={'class':'form-control', 'placeholder':'seleccione fecha', 'type': 'date'}),
             'fecha_f': forms.DateInput(attrs={'class':'form-control', 'placeholder':'seleccione fecha', 'type': 'date'}),
             'soportes': forms.FileInput(attrs={'class':'form-control'}),
-            'convenio': forms.FileInput(attrs={'class':'form-control'}),
+            'convenio': forms.FileInput(attrs={'class':'form-control', 'required':''}),
         }
 

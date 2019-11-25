@@ -159,7 +159,10 @@ class Solicitud(models.Model):
             else:
                 return "falta reintegro"
         return "en proceso"
-
+    
+    def nombre_situacion(self):
+        nombre = self.situacion.nombre
+        return f'{nombre}'
 
     # def save(self):
     #     for field in self._meta.fields:
