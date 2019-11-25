@@ -20,7 +20,7 @@ urlpatterns = [
     path('requiere_estudio_perfil/<int:id_solicitud>', requiere_estudio_perfil, name="requiere_estudio_perfil"),
     ## interno
     path('selecciona_interno/', selecciona_interno, name="selecciona_interno"),
-    path('formato_interno/<slug:slug_interno>', formato_interno, name="formato_interno"),
+    path('formato_interno/<slug:slug_interno>/funcionario/<int:pk>', formato_interno, name="formato_interno"),
     ## función para lenar bases
     path('llenar/', llenar_tipos_situaciones, name="llenar"),
 ]

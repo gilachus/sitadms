@@ -1,8 +1,10 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   {% if user.is_authenticated %}
-  <a class="navbar-brand institucional" href="{% url 'users:inicio' %}"><i class="fab fa-buffer"></i>
-    Situaciones Administrativas UdeC
+  <a class="navbar-brand institucional" href="{% url 'users:inicio' %}">
+    <span class="d-none d-md-block"><i class="fab fa-buffer"></i>
+    Situaciones Administrativas UdeC</span>
+    <i class="d-md-none fab fa-buffer"></i>
   </a>
   {% else %}
   <a class="navbar-brand" href="/">
@@ -18,6 +20,7 @@
       {% block items_nav %}
       {% endblock %}
       {% if user.is_authenticated %}
+      <a class="nav-item nav-link" href="{% url 'users:inicio' %}">Inicio</a>
       {% if user.first_name %}
       <a class="nav-item nav-link institucional" href="{% url 'users:perfil' %}">Bienvenido <em>{{ user.first_name }}
           {{ user.last_name }}</em> <span class="text-light ml-2">|</span></a>

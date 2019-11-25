@@ -3,8 +3,11 @@
 
 
 {% block nombre_pantalla %}
-<h4>Mis Solicitudes</h4>
+<h3><a class="text-decoration-none" href="{% url 'users:inicio' %}">
+        <i class="text-info h3 fas fa-angle-left ml-1"></i></a>
+        Mis Solicitudes</h4>
 {% endblock %}
+
 {% block contenido %}
 <br>
 <table class="table table-hover table-striped">

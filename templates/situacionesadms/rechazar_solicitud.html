@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block contenido %}
+{% block nombre_pantalla %}
 <h3>Rechazo de Solicitud No. {{ solicitud.id }}</h3>
+{% enblock %}
+
+{% block contenido %}
 <form action="" method="post">
     {% csrf_token %}
     {{ form_rechazo.as_p }}

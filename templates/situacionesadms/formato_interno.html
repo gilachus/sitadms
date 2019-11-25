@@ -1,11 +1,39 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block nombre_pantalla %}
+<h3><a class="text-decoration-none" href="{% url 'situacionesadms:selecciona_interno' %}">
+        <i class="text-info h3 fas fa-angle-left ml-1"></i></a>
+    Registro de {{ title }}</h3>
+{% endblock %}
+
 {% block contenido %}
-<h3>Registro de {{ situacion }}</h3>
-<hr>
-<p class="center">Funcionario: {{ funcionario }}</p>
-<form action="">
-    {{ form.as_p }}
-</form>
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <strong class="center">Funcionario: {{ funcionario.nombre_completo }}</strong>
+        <form action="." method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                {% include 'situacionesadms/basicform.html' %}
+                {% for field in form %}
+                {% if field.id_for_label in "id_fecha_i id_fecha_f" %}
+                <!--includes arriba y abajo-->
+                {% else %}
+                <div class="form-group">
+                    {{ field.errors }}
+                    {{ field.label_tag }} {{ field }}
+                    {% if field.help_text %}
+                    <p class="help">{{ field.help_text|safe }}</p>
+                    {% endif %}
+                </div>
+                {% endif %}
+                {% endfor %}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-dark btn-block" type="submit">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}

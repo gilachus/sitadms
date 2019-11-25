@@ -29,8 +29,8 @@
             <th scope="row">{{ funcionario.id}}</th>
             <td>{{ funcionario.nombre_completo}}</td>
             <td>
-                <a href="{% url 'situacionesadms:formato_interno' 'comision-de-estudio-mayor-6-meses' %}" class="btn btn-primary btn-sm">Comisión</a>
-                <a href="{% url 'situacionesadms:formato_interno' 'ano-sabatico' %}" class="btn btn-info btn-sm">Sabático</a>
+                <a href="{% url 'situacionesadms:formato_interno' 'comision-de-estudio-mayor-6-meses' funcionario.id %}" class="btn btn-primary btn-sm">Comisión</a>
+                <a href="{% url 'situacionesadms:formato_interno' 'ano-sabatico' funcionario.id %}" class="btn btn-info btn-sm">Sabático</a>
             </td>
     
         </tr>

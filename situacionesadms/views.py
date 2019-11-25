@@ -15,6 +15,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .funciones_extra import valida_empleado, valida_acceso, ESTADO, notas_situacion
 from django.db.models import Q
+from .utils import retorna_form
 
 
 ## sección usuario básico
@@ -34,36 +35,7 @@ def selecciona(request):
 
 
 ### selecciona fomato.txt
-def retorna_form(slug):
-    """retorna un form dependiendo de la situacion adm que quiere diligenciar el usuario"""
 
-    dict_forms = {"permiso-remunerado": PermisoRemuneradoForm,
-                "permiso-sindical": JustificacionYEncargoForm,
-                "permiso-laboral": PermisoLaboralForm,
-                "comision-de-servicio": ComisionForm,
-                "comision-de-estudio-menor-6-meses": ComisionForm,
-                "comision-de-estudio-mayor-6-meses": ComisionForm,
-                "comision-menor-a-15-dias-viaticos": ComisionViaticosForm,
-                "permiso-academico-compensado-interno": JustificacionYEncargoForm,
-                "permiso-academico-compensado-externo": JustificacionYEncargoForm,
-                "permiso-para-ejercer-docencia-universitaria": JustificacionYEncargoForm,
-                "licencia-especial-para-docentes": BasicForm,
-                "licencia-ordinaria-no-remunerada": BasicForm,
-                "licencia-no-remunerada-para-adelantar-estudios": BasicForm,
-                "reserva-de-vacaciones": ReservaVacacionesForm,
-                "disfrute-de-vacaciones-reservadas": DisfruteVacacionesForm,
-                "reserva-de-dias-compensatorios": ReservaCompensatorio,
-                "disfrute-de-dias-compensatorios": DisfruteCompensatorio,
-                "licencia-por-enfermedad": ConEncargoForm,
-                "licencia-por-maternidad": ConEncargoForm,
-                "licencia-por-paternidad": ConEncargoForm,
-                "licencia-por-luto": ConEncargoForm,
-                "licencia-deportiva":JustificacionYEncargoForm,
-                }
-    if slug in dict_forms:
-        return dict_forms[slug]
-    else:
-        return BasicForm
     
 
 ### retorna_template.txt
@@ -302,23 +274,29 @@ def selecciona_interno(request):
 
 
 @login_required
-def formato_interno(request, slug_interno):
+def formato_interno(request, slug_interno, pk):
     """agregar soportes y convenio para el registro de la sistuacion administrativa(i)"""
     if not valida_empleado(request):
         return redirect('users:inicio')
     situacion = get_object_or_404(SituacionAdministrativa, slug=slug_interno)
+    empleado = get_object_or_404(Empleado, pk=pk)
+    forms = retorna_form(slug_interno) 
     if request.method == 'POST':
-        forms = retorna_form(slug_interno)
         form = forms(request.POST, request.FILES)
-        empleado_form = EmpleadoForm(request.POST)
-    return render(request, 'situacionesadms:formato_interno')
+        print(form.cleaned_data['fecha_i'])
+        if form.is_valid:
+            print("valido")
+    context={
+        'title': situacion.nombre,
+        'form': forms(),
+        'funcionario': empleado 
+    }
+    return render(request, 'situacionesadms/formato_interno.html', context)
 
 @login_required
 def listado_interno(request):
     """listar ultimas situaciones administrativas(i)"""
     pass
-
-
 
 
 

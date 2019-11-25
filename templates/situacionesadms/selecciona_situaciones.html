@@ -4,7 +4,9 @@
 {% block nombre_pantalla %}
 <div class="row">
     <div class="col px-2">
-        <h3 title="Escoga la Situación Aministrativa que desea tramitar">Tipo de Solicitud</h3>
+        <h3 title="Escoga la Situación Aministrativa que desea tramitar"><a class="text-decoration-none" href="{% url 'users:inicio' %}">
+                <i class="text-info h3 fas fa-angle-left ml-1"></i></a>
+                Tipo de Solicitud</h3>
     </div>
     <div class="col text-right">
         <button type="button" class="btn btn-warning" data-toggle="modal"
@@ -14,7 +16,6 @@
 {% endblock %}
 
 {% block contenido %}
-<br>
 <div class="row justify-content-start mt-2">
     {% for situacion in situaciones %}
     <div class="col-lg-3 p-1">

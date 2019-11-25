@@ -2,7 +2,9 @@
 {% load static %}
 
 {% block nombre_pantalla %}
-<h4><i class="mx-2 fas fa-user"></i>Perfil</h4>
+<h3><a class="text-decoration-none" href="{% url 'users:inicio' %}">
+        <i class="text-info h3 fas fa-angle-left ml-1"></i></a>
+        <i class="mx-2 fas fa-user"></i>Perfil</h4>
 {% endblock %}
 {% block contenido %}
 <div class="row justify-content-center">
