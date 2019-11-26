@@ -6,7 +6,7 @@ def estadisticas(request):
     pass
 
 def ultimos_encargos(request):
-    solicitudes_con_encargo = Solicitud.objects.filter(~Q(nombre_encargo=None), Q(estado=3))
+    solicitudes_con_encargo = Solicitud.objects.filter(~Q(nombre_encargo=None), Q(estado=1))
     context={
         'encargos': solicitudes_con_encargo.order_by('-fecha_creacion')[0:30]
     }

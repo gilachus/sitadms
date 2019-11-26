@@ -10,6 +10,7 @@
 
 {% block contenido %}
 <br>
+<div class="table-responsive">
 <table class="table table-hover table-striped">
     <thead>
         <tr>
@@ -42,9 +43,10 @@
         {% endif %}
     </tbody>
 </table>
+</div>
 <br>
-<small class="text-muted">páginas</small>
-<hr class="my-1">
+<small class="text-muted"><em>páginas</em></small>
+<br class="my-1">
 <div class="">
     
     {% if solicitudes.has_previous %}

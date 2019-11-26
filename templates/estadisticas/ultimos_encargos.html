@@ -2,6 +2,13 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
+{% block nombre_pantalla %}
+<h3><a class="text-decoration-none" href="{% url 'users:inicio' %}">
+        <i class="text-info h3 fas fa-angle-left ml-1"></i></a>
+    Listado de Encargos
+</h3>
+{% endblock %}
+
 {% block contenido %}
 <div class="row">
     <div class="col">

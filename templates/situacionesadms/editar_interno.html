@@ -4,15 +4,17 @@
 {% block nombre_pantalla %}
 <h3><a class="text-decoration-none" href="{% url 'situacionesadms:selecciona_interno' %}">
         <i class="text-info h3 fas fa-angle-left ml-1"></i></a>
-    Registro de {{ title }}</h3>
+    Editar {{ title }}</h3>
 {% endblock %}
 
 {% block contenido %}
 <div class="row justify-content-center">
     <div class="col-lg-8">
-        <strong class="center">Funcionario: {{ funcionario.nombre_completo }}</strong>
-        
-        <form action="{% url 'situacionesadms:formato_interno' slug funcionario.id %}" method="post" enctype="multipart/form-data">
+        <strong class="center">Funcionario: {{ solicitud.empleado.nombre_completo }}</strong>
+        <em><small>Fecha Inicial actual: {{ solicitud.fecha_i |date:"M d, Y" }} -
+             Fecha Final actual: {{ solicitud.fecha_f |date:"M d, Y" }}</small></em>
+       
+        <form action="{% url 'situacionesadms:editar_interno' slug solicitud.id %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
                 {% include 'situacionesadms/basicform.html' %}

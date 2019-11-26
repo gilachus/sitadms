@@ -16,7 +16,8 @@ from uuid import uuid4
 # -método delete-
 from django.core.files.storage import default_storage
 from django.db.models import FileField
-# 
+# https://www.youtube.com/watch?v=b43JIn-OGZU
+from time import time
 
 ESTADO = [(0, "papelera"), (1, "en trámite"), (2, "corregir"), (3, "aprobada"), (4, "revocada"), (5, "rechazada")]
 
@@ -31,7 +32,7 @@ def nombre_aleatorio(n):
     password = ''.join(random.choice(letters) for i in range(n))
     return password
 
-def update_filename(instance, filename, path="attached/"):
+def update_filename(instance, filename, path="attached"):
     # upload_to = path
     # ext = filename.split('.')[-1]
     # get filename
@@ -131,3 +132,11 @@ def notas_situacion(slug):
         return nota[slug]
     else:
         return "no hay recomendaciones"
+
+
+# ejemplo
+def get_upload_file_name(instance, filename, path="attached"):
+    marca = str(time()).replace('.','_')
+    #marca = str(uuid4().hex)
+    return f'uploaded_files/{path}/{tiempo}_{filename}'
+

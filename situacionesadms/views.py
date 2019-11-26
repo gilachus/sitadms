@@ -1,3 +1,4 @@
+import os
 from django.views.generic.base import View
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, reverse, redirect, get_object_or_404
@@ -9,7 +10,7 @@ from .forms import (BasicForm, ConJustificacionForm, ConEncargoForm, Justificaci
                     PermisoRemuneradoForm, PermisoLaboralForm, ComisionForm, ComisionViaticosForm, 
                     ReservaVacacionesForm, DisfruteVacacionesForm, 
                     ReservaCompensatorio, DisfruteCompensatorio,
-                    RechazoForm) 
+                    RechazoForm, ComisionMayorSeisSabaticoFormEdit) 
 from .disabled_forms import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -112,8 +113,11 @@ def solicitudes_entrantes(request):
     base = Solicitud.objects.all().filter(estado=1)
     solicitudes = None
     
+    if request.user.is_superuser:
+        solicitudes = base
+
     ## revision luto enfermedad paternidad maternidad 
-    if user.empleado.tipo_acceso==5:
+    elif user.empleado.tipo_acceso==5:
         solicitudes = base.filter(Q(situacion__nombre="licencia por enfermedad") | 
         Q(situacion__nombre="licencia por maternidad") | Q(situacion__nombre="licencia por paternidad") | 
         Q(situacion__nombre="licencia por luto")).exclude(Q(check_abogado_AL=True))
@@ -141,7 +145,7 @@ def solicitudes_entrantes(request):
         
     ## Jefe OAGHDP
     elif user.empleado.tipo_acceso == 4:
-        solicitudes = base.filter(Q(check_asistente_OAGHDP) | Q(check_jefe_AL) | (Q(requiere_estudio_perfil=True) & Q(check_seleccion=True)))
+        solicitudes = base.filter(Q(check_asistente_OAGHDP=True) | Q(check_jefe_AL=True) | (Q(revisar_perfil=True) & Q(check_seleccion=True))) # 
     ## vice doc
     elif user.empleado.tipo_acceso == 10:
         solicitudes = base.filter(Q(check_jefe_OAGHDP=True) & Q(va_a_vice=1))
@@ -162,12 +166,17 @@ def revision_solicitud(request, solicitud_id):
         if not valida_acceso(request):
             return redirect('users:inicio')
     solicitud = get_object_or_404(Solicitud, id=solicitud_id)
-    print(solicitud.situacion.nombre)
+    if solicitud.soportes:
+        nombre_soportes = os.path.basename(solicitud.soportes.file.name)
+    if not solicitud.situacion:
+        messages.error(request, "error solicitud: tipo de situacion administrativa no definida")
+        return redirect('situacionesadms:solicitudes_entrantes')
     forms = retorna_disabled_form(solicitud.situacion.slug)
     form = forms(instance=solicitud)
     context = {
         'solicitud': solicitud,
-        'form': form
+        'form': form,
+        'nombre_soportes': nombre_soportes
     }
     return render(request, 'situacionesadms/revision_solicitud.html', context)
 
@@ -283,14 +292,13 @@ def formato_interno(request, slug_interno, pk):
     if request.method == 'POST':
         forms = retorna_form(slug_interno) 
         form = forms(request.POST, request.FILES)
-        print('post...')
         if form.is_valid:
             print("válido")
             formato = form.save(commit=False)
             formato.empleado = funcionario
             formato.estado = 3
             formato.save()
-            messages.success(request, f"registro de <<{situacion.nombre}>> éxitoso ")
+            messages.success(request, f"registro de -{situacion.nombre}- éxitoso ")
         return redirect('users:inicio')
     else:
         forms = retorna_form(slug_interno) 
@@ -305,12 +313,42 @@ def formato_interno(request, slug_interno, pk):
 @login_required
 def listado_interno(request):
     """listar situaciones administrativas(i)"""
-    situaciones_interno = Solicitud.objects.filter(estado=3).order_by('-fecha_creacion')
+    situaciones_interno = Solicitud.objects.all().filter(Q(situacion__nombre="comisión de estudio mayor 6 meses") | 
+    Q(situacion__nombre="año sabático"))
+    print(situaciones_interno)
     context = {
         'situaciones': situaciones_interno
     }
-    return render(request, 'situacionesadms/listado_interno.html')
+    return render(request, 'situacionesadms/listado_interno.html', context)
 
+@login_required
+def editar_interno(request, slug_interno, id_solicitud_interno):
+    solicitud_interno = get_object_or_404(Solicitud, pk=id_solicitud_interno)
+    #forms = retorna_form(slug_interno)
+    forms = ComisionMayorSeisSabaticoFormEdit
+    if request.method == 'POST':
+        form = forms(request.FILES, request.POST)
+        print('post...')
+        if form.is_valid:
+            print("válido")
+            messages.success(request, f"registro de -{situacion.nombre}- éxitoso ")
+        return redirect('users:inicio')
+    else:
+        data={
+            'fecha_i': solicitud_interno.fecha_i,
+            'fecha_f': solicitud_interno.fecha_f,
+            'soportes': solicitud_interno.soportes,
+            'convenio': solicitud_interno.convenio
+        }
+        form = forms(initial=data) 
+
+    context = {
+        'form': form,
+        'title': solicitud_interno.situacion.nombre,
+        'solicitud': solicitud_interno,
+        'slug': slug_interno
+    }
+    return render(request, 'situacionesadms/editar_interno.html', context)
 
 
 ## ----extra------------------------------------------------------------------------------------

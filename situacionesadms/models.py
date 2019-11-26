@@ -119,6 +119,7 @@ class Solicitud(models.Model):
     extiende_a = models.OneToOneField("Solicitud", on_delete=models.SET_NULL, null=True, blank=True, related_name="extiende")
     ## -------revisar-----------------------------------------------------------------------------------
     revisar_planeacion = models.BooleanField(default=False)
+    revisar_perfil = models.BooleanField(default=True)
     ## -------checks------------------------------------------------------------------------------------ 
     va_a_vice = models.PositiveIntegerField(choices=VICE, null=True, blank=True)
     check_jefe_inmediato = models.BooleanField(default=False)

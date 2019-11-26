@@ -2,31 +2,47 @@
 {% load static %}
 
 {% block nombre_pantalla %}
+<h3>
+    <a class="text-decoration-none" href="{% url 'situacionesadms:selecciona_interno' %}">
+        <i class="text-info h3 fas fa-angle-left ml-1"></i></a>
+    Listado de "Comisión de Estudio Mayor a 6 Meses" y "Año Sabático"
+</h3>
 {% endblock %}
 
 {% block contenido %}
-<table class="table table-hover table-striped">
-    <thead>
-        <tr>
-            <th scope="col">No.</th>
-            <th scope="col">Situacion Administrativa</th>
-            <th scope="col">Funcionario</th>
-            <th scope="col">Cédula</th>
-            <th scope="col">Fecha</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% if situaciones %}
-        {% for situacion in situaciones %}
-        <tr>
-            <th scope="row">{{ situacion.id }}</th>
-            <td>{{ situacion.situacion.nombre}}</td>
-            <td>{{ situacion.empleado.nombre_completo }}</td>
-            <td>{{ situacion.empleado.user.username }}</td>
-            <td>{{ situacion.fecha_creacion }}</td>
-        </tr>
-        {% endfor %}
-        {% endif %}
-    </tbody>
-</table>
+<br>
+<div class="table-responsive">
+    <table class="table table-hover table-striped table-sm">
+        <thead>
+            <tr>
+                <th scope="col">No.</th>
+                <th scope="col">Situacion Administrativa</th>
+                <th scope="col">Fecha i</th>
+                <th scope="col">Fecha f</th>
+                <th scope="col">Funcionario</th>
+                <th scope="col">Cédula</th>
+                <th scope="col">Fecha de Registro</th>
+                <th scope="col">Opción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if situaciones %}
+            {% for situacion in situaciones %}
+            <tr>
+                <th scope="row">{{ situacion.id }}</th>
+                <td>{{ situacion.situacion.nombre}}</td>
+                <td>{{ situacion.fecha_i |date:"M d, Y" }}</td>
+                <td>{{ situacion.fecha_f |date:"M d, Y" }}</td>
+                <td>{{ situacion.empleado.nombre_completo }}</td>
+                <td>{{ situacion.empleado.user.username }}</td>
+                <td>{{ situacion.fecha_creacion }}</td>
+                <td><a href="{% url 'situacionesadms:editar_interno' situacion.situacion.slug situacion.id  %}"
+                        class="btn btn-sm btn-link">editar</a>
+                </td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

@@ -2,14 +2,17 @@
 {% load static %}
 
 {% block nombre_pantalla %}
-  <h4>Revisión Solicitud</h4>
+<h3><a class="text-decoration-none" href="{% url 'situacionesadms:solicitudes_entrantes' %}">
+    <i class="text-info h3 fas fa-angle-left ml-1"></i></a>
+    Revisión Solicitud</h3>
 {% endblock %}
+
 {% block contenido %}
   <div class="card">
     <div class="card-header d-flex justify-content-between">
       <span>Solicitud No. {{solicitud.id}}</span>
       <strong class="">{{ solicitud.situacion|title }}</strong>
-      <em class="">{{ solicitud.fecha_creacion|date:"M d, Y" }}</em>
+      <em class="">{{ solicitud.fecha_creacion |date:"M d, Y" }}</em>
     </div>
     <div class="card-body">
       <div class="row card-title">
@@ -43,10 +46,11 @@
             {% include 'situacionesadms/basicform3.html' %}
           </form>
         </div>
-
+        {% if solicitud.soportes %}
         <div class="col-12">
-          <a href="{{solicitud.soportes.url}}">Soportes</a>
+          <a href="{{ solicitud.soportes.url }}">Soportes: {{ nombre_soportes }}</a>
         </div>
+        {% endif %}
       </div>
     </div>
   </div>
