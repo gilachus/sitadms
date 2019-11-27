@@ -296,6 +296,7 @@ def formato_interno(request, slug_interno, pk):
         if form.is_valid:
             print("válido")
             formato = form.save(commit=False)
+            formato.situacion = situacion
             formato.empleado = funcionario
             formato.estado = 3
             formato.save()
@@ -388,7 +389,8 @@ class DescargarArchivoView(View):
         response['Content-Disposition'] = 'attachment; filename="%s"' % solicitud.soporte
         return response
 
-##probando código
+
+##probando código...
 def hacer_registro(self):
         fecha = datetime(int(self.data['fecha_de_nacimiento_year']),
                         int(self.data['fecha_de_nacimiento_month']),

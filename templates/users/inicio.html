@@ -7,7 +7,7 @@
     <div class="col-12 text-center">
         <h2></h2>
     </div>
-</div>  
+</div>
 {% if user.empleado %}
 <div class="row justify-content-center mt-5">
     <div class="col-md-6 text-center">
@@ -15,20 +15,25 @@
     </div>
 </div>
 <br>
-
-    {% if user.empleado.tipo_acceso != 1 %}
-    <div class="row justify-content-center mt-2">
-        <div class="col-md-6 text-center">
-            <a href="{% url 'situacionesadms:solicitudes_entrantes' %}" class="btn btn-secondary btn-lg btn-block">Solicitudes
-                Entrantes</a>
-        </div>
+{% if user.empleado.tipo_acceso != 1 %}
+<div class="row justify-content-center mt-2">
+    <div class="col-md-6 text-center">
+        <a href="{% url 'situacionesadms:solicitudes_entrantes' %}"
+            class="btn btn-secondary btn-lg btn-block">Solicitudes
+            Entrantes</a>
     </div>
-    {% endif %}
-    {% if user.empleado.tipo_acceso in permisos_interno %}
+</div>
+{% endif %}
+{% if user.empleado.tipo_acceso in permisos_interno %}
 <div class="row justify-content-center mt-2">
     <div class="col-md-6 text-center">
         <a href="{% url 'situacionesadms:selecciona_interno' %}" class="btn btn-secondary btn-lg btn-block">Formato
             Interno</a>
+    </div>
+</div>
+<div class="row justify-content-center mt-2">
+    <div class="col-md-6 text-center">
+        <a href="{% url 'estadisticas:estadisticas' %}" class="btn btn-secondary btn-lg btn-block">Estadísticas</a>
     </div>
 </div>
 {% endif %}
