@@ -17,6 +17,7 @@ from django.contrib.auth.decorators import login_required
 from .funciones_extra import valida_empleado, valida_acceso, ESTADO, notas_situacion
 from django.db.models import Q
 from .utils import retorna_form
+from .forms import SelectdateForm
 
 
 ## sección usuario básico
@@ -299,7 +300,7 @@ def formato_interno(request, slug_interno, pk):
             formato.estado = 3
             formato.save()
             messages.success(request, f"registro de -{situacion.nombre}- éxitoso ")
-        return redirect('users:inicio')
+        return redirect('situacionesadms:selecciona_interno')
     else:
         forms = retorna_form(slug_interno) 
     context={
@@ -327,11 +328,11 @@ def editar_interno(request, slug_interno, id_solicitud_interno):
     #forms = retorna_form(slug_interno)
     forms = ComisionMayorSeisSabaticoFormEdit
     if request.method == 'POST':
-        form = forms(request.FILES, request.POST)
+        form = forms(request.POST, request.FILES)
         print('post...')
         if form.is_valid:
-            print("válido")
-            messages.success(request, f"registro de -{situacion.nombre}- éxitoso ")
+            form.save()
+            messages.success(request, f"registro de -{solicitud_interno.situacion.nombre}- éxitoso ")
         return redirect('users:inicio')
     else:
         data={
@@ -340,8 +341,8 @@ def editar_interno(request, slug_interno, id_solicitud_interno):
             'soportes': solicitud_interno.soportes,
             'convenio': solicitud_interno.convenio
         }
-        form = forms(initial=data) 
-
+        #form = forms(initial=data) 
+        form = forms(instance=solicitud_interno)
     context = {
         'form': form,
         'title': solicitud_interno.situacion.nombre,
@@ -386,3 +387,26 @@ class DescargarArchivoView(View):
         response = HttpResponse(solicitud.soporte, content_type='text/plain')
         response['Content-Disposition'] = 'attachment; filename="%s"' % solicitud.soporte
         return response
+
+##probando código
+def hacer_registro(self):
+        fecha = datetime(int(self.data['fecha_de_nacimiento_year']),
+                        int(self.data['fecha_de_nacimiento_month']),
+                        int(self.data['fecha_de_nacimiento_day']))
+        
+        # nuevo_registro = Registro(nombre=self.data['nombre'],
+        #                 fecha_de_nacimiento=fecha)
+        # nuevo_regitro.save()
+        return 'Registro exitoso'
+
+def selectdate(request):
+    if request.method == 'POST':
+        form = SelectdateForm(request.POST)
+        if register_form.is_valid():
+            print('correcto')
+            # success = register_form.registrar_usuario(request.user)
+            # return redirect('./')
+    else:
+        form = SelectdateForm(initial={'fecha':'16/09/1990'})
+        return render(request, 'situacionesadms/selectdate.html', {'form': form})
+    

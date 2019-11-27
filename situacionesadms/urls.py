@@ -4,6 +4,7 @@ from .views import (selecciona, formato, mis_solicitudes,
                     llenar_tipos_situaciones)
 from django.urls import path
 from django.core.exceptions import PermissionDenied
+from .views import selectdate
 
 app_name = 'situacionesadms'
 
@@ -25,4 +26,7 @@ urlpatterns = [
     path('editar_interno/<slug:slug_interno>/<int:id_solicitud_interno>', editar_interno, name="editar_interno"),
     ## función para lenar bases
     path('llenar/', llenar_tipos_situaciones, name="llenar"),
+
+    ##probando código
+    path('selectdate', selectdate, name="selectdate")
 ]

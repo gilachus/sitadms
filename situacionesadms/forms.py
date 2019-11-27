@@ -235,24 +235,46 @@ class RechazoForm(ModelForm):
 
 # Comisión Mayor Seis y Sabático
 class ComisionMayorSeisSabaticoForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ComisionMayorSeisSabaticoForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
     class Meta:
         model = Solicitud
         fields = ['fecha_i', 'fecha_f', 'soportes', 'convenio']
         widgets = {
-            'fecha_i': forms.DateInput(attrs={'class':'form-control'}),
-            'fecha_f': forms.DateInput(attrs={'class':'form-control'}),
-            'soportes': forms.FileInput(attrs={'class':'form-control'}),
-            'convenio': forms.FileInput(attrs={'class':'form-control', 'required':''}),
+            'fecha_i': forms.DateInput(attrs={'type': 'date'}),
+            'fecha_f': forms.DateInput(attrs={'type': 'date'}),
+            #'soportes': forms.FileInput(attrs={}),
+            'convenio': forms.FileInput(attrs={'required':''}),
         }
+
+
+class DateInput2(forms.DateInput):
+    input_type = "date"
+
+    def __init__(self, **kwargs):
+        kwargs["format"] = "%Y-%m-%d"
+        super().__init__(**kwargs)
 
 class ComisionMayorSeisSabaticoFormEdit(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ComisionMayorSeisSabaticoFormEdit, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+        self.fields['convenio'].widget.attrs['class'] = 'required'
 
     class Meta:
         model = Solicitud
         fields = ['fecha_i', 'fecha_f', 'soportes', 'convenio']
         
+        widgets = {
+                'fecha_i': DateInput2(),
+                'fecha_f': DateInput2(),
+        }
+
+class SelectdateForm(forms.Form):
+    fecha = forms.DateField(label='Fecha:', 
+    widget=forms.SelectDateWidget(years=range(1900,2050), 
+    attrs={'class':'form-control',}))
 
