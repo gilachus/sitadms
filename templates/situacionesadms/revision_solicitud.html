@@ -48,7 +48,7 @@
         </div>
         {% if solicitud.soportes %}
         <div class="col-12">
-          <a href="{{ solicitud.soportes.url }}">Soportes: {{ nombre_soportes }}</a>
+          <a href="{{ solicitud.soportes.url }}">Soportes: {{ nombre_soportes }}</a> <span>nombre archivo {{solicitud.soportes}}</span>
         </div>
         {% endif %}
       </div>

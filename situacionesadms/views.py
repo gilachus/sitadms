@@ -38,8 +38,6 @@ def selecciona(request):
 
 ### selecciona fomato.txt
 
-    
-
 ### retorna_template.txt
 
 ## guardar formato de situacion administrativa 
@@ -102,7 +100,48 @@ def mis_solicitudes(request):
     return render(request, 'situacionesadms/mis_solicitudes.html', context)
 
 
+def modifica_corrige_a(request, accion, id_solicitud):
+    ## opcion clonar
+    # hero = Hero.objects.first()
+    # hero.pk = None
+    # hero.save()
+    solicitud_nueva = get_object_or_404(Solicitud, pk=id_solicitud)
+    slug_situacion = solicitud_nueva.situacion.slug
+    if slug_situacion:
+        print(slug_situacion)
+        forms = retorna_form(slug_situacion)
+    else: 
+        messages.error(request, "error: la solicitud no tiene un tipo de situación definido")
+        return redirect('situacionesadms:mis_solicitudes')
+    solicitud_nueva.pk = None #clonando
+    if request.method == 'POST':
+        form = forms(request.POST, request.FILES)
+        if form.is_valid:
+            vieja=get_object_or_404(Solicitud, pk=id_solicitud)
+            nueva = form.save(commit=False)
+            nueva.tipo=1
+            # nueva.modifica_a=vieja
+            # nueva.situacion=vieja.situacion
+            # nueva.empleado=vieja.empleado
+            # nueva.soportes=vieja.soportes
+            nueva.save()
+            print(accion)
+            return redirect('situacionesadms:mis_solicitudes')
+    else:
+        form=forms(instance=solicitud_nueva)
+    context = {
+        'form': form,
+        'accion': accion,
+        'solicitud_actual': id_solicitud,
+        'solicitud_nueva': solicitud_nueva,
+    }
+    return render(request, 'situacionesadms/modifica_corrige_a.html', context)
+
+
+
+## ---------------------------------------------------------------------------
 ## ----------------------sección gestión--------------------------------------
+
 @login_required
 def solicitudes_entrantes(request):
     """Dependiento el perfil del usuario se mostrara un listado"""
@@ -246,9 +285,10 @@ def editar_solicitud(request, id):
     pass
 
 
-## ----sección reintegro
+## --------------------------------------------------------------------------------------------
+## -------------sección reintegro--------------------------------------------------------------
 
-## -----------extra reintegro-------------------------------------------------------------------
+## -------------extra reintegro----------------------------------------------------------------
 def no_reintegro(id_solicitud):
     """poner que no requiere reintegro"""
     solicitud = Solicitud.get_object_or_404(id=id_solicitud)
@@ -261,8 +301,9 @@ def si_reintegro(id_solicitud):
     solicitud.requiere_reintegro = True
     solicitud.save()
 
+## --------------------------------------------------------------------------------------
+## ----situaciones interno sección comision mayor 6 meses - sabático---------------------
 
-## ----situaciones interno sección comision mayor 6 meses - sabático----
 @login_required
 def selecciona_interno(request):
     """primero buscar al funcionario y seleccionar el tipo de situacion administrativa(i)"""
@@ -352,7 +393,7 @@ def editar_interno(request, slug_interno, id_solicitud_interno):
     }
     return render(request, 'situacionesadms/editar_interno.html', context)
 
-
+## ---------------------------------------------------------------------------------------------
 ## ----extra------------------------------------------------------------------------------------
 @login_required
 def llenar_tipos_situaciones(request):
