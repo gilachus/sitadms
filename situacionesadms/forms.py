@@ -26,7 +26,8 @@ class BasicForm(ModelForm):
         super(BasicForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
-        self.fields['soportes'].widget.attrs['class'] = 'required'
+            if field_name=='soportes':
+                field.widget.attrs['required'] = ''
     class Meta:
         model = Solicitud
         fields = ['fecha_i', 'fecha_f', 'soportes']
@@ -42,7 +43,8 @@ class ConJustificacionForm(ModelForm):
         super(ConJustificacionForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
-        self.fields['soportes'].widget.attrs['class'] = 'required'
+            if field_name=='soportes':
+                field.widget.attrs['required'] = ''
     class Meta:
         model = Solicitud
         fields = ['fecha_i', 'fecha_f', 'justificacion', 'soportes']
@@ -59,7 +61,8 @@ class ConEncargoForm(ModelForm):
         super(ConEncargoForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
-        self.fields['soportes'].widget.attrs['class'] = 'required'
+            if field_name=='soportes':
+                field.widget.attrs['required'] = ''
     class Meta:
         model = Solicitud
         fields = ['fecha_i', 'fecha_f', 'soportes', 'nombre_encargo', 'apellido_encargo', 'cargo_encargo']
@@ -77,7 +80,8 @@ class JustificacionYEncargoForm(ModelForm):
         super(JustificacionYEncargoForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
-        self.fields['soportes'].widget.attrs['class'] = 'required'
+            if field_name=='soportes':
+                field.widget.attrs['required'] = ''
     class Meta:
         model = Solicitud
         fields = ['fecha_i', 'fecha_f', 'justificacion', 'soportes', 'nombre_encargo', 'apellido_encargo', 'cargo_encargo']
@@ -96,7 +100,8 @@ class PermisoRemuneradoForm(ModelForm):
         super(PermisoRemuneradoForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
-        self.fields['soportes'].widget.attrs['class'] = 'required'
+            if field_name=='soportes':
+                field.widget.attrs['required'] = ''
     DIAS = [(1,"1"),(2,"2"),(3,"3")]
     dias_permiso = forms.ChoiceField(label="Días permiso" ,choices=DIAS)
     class Meta:
@@ -120,7 +125,8 @@ class PermisoLaboralForm(ModelForm):
         super(PermisoLaboralForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
-        self.fields['soportes'].widget.attrs['class'] = 'required'
+            if field_name=='soportes':
+                field.widget.attrs['required'] = ''
     class Meta:
         model = Solicitud
         fields = ['fecha_i', 'fecha_f', 'soportes', 'nombre_del_evento', 'ciudad', 'pais', 'asiste_en_calidad']
@@ -138,7 +144,8 @@ class ComisionForm(ModelForm):
         super(ComisionForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
-        self.fields['soportes'].widget.attrs['class'] = 'required'
+            if field_name=='soportes':
+                field.widget.attrs['required'] = ''
     class Meta:
         model = Solicitud
         fields = ['fecha_i', 'fecha_f', 'justificacion', 'soportes', 'nombre_del_evento', 'ciudad', 'pais', 'asiste_en_calidad', 'nombre_encargo', 'apellido_encargo', 'cargo_encargo']
@@ -160,7 +167,8 @@ class ComisionViaticosForm(ModelForm):
         super(ComisionViaticosForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
-        self.fields['soportes'].widget.attrs['class'] = 'required'
+            if field_name=='soportes':
+                field.widget.attrs['required'] = ''
     class Meta:
         model = Solicitud
         fields = ['fecha_i', 'fecha_f', 'soportes', 'resolucion_viaticos', 'nombre_del_evento', 'ciudad', 'pais', 'asiste_en_calidad', 'nombre_encargo', 'apellido_encargo', 'cargo_encargo']
@@ -183,7 +191,8 @@ class ReservaVacacionesForm(ModelForm):
         super(ReservaVacacionesForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
-        self.fields['soportes'].widget.attrs['class'] = 'required'
+            if field_name=='soportes':
+                field.widget.attrs['required'] = ''
     class Meta:
         model = Solicitud
         fields = ['resolucion_vaciones', 'no_dias_a_reservar', 'fecha_i', 'fecha_f', 'justificacion', 'soportes']
@@ -201,7 +210,8 @@ class DisfruteVacacionesForm(ModelForm):
         super(DisfruteVacacionesForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
-        self.fields['soportes'].widget.attrs['class'] = 'required'
+            if field_name=='soportes':
+                field.widget.attrs['required'] = ''
     class Meta:
         model = Solicitud
         fields = ['no_reserva_rectoria', 'no_reserva_personal', 'no_dias_a_disfrutar', 'fecha_i', 'fecha_f', 'nombre_encargo', 'apellido_encargo', 'cargo_encargo']
@@ -221,6 +231,8 @@ class DisfruteVacaciones2Form(ModelForm):
         super(DisfruteVacaciones2Form, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+            if field_name=='soportes':
+                field.widget.attrs['required'] = ''
     class Meta:
         model = Solicitud
         fields = ['no_reserva_rectoria', 'no_reserva_personal', 'no_dias_a_reservar', 'fecha_i', 'fecha_f', 'dias_pendientes1', 'nombre_encargo', 'apellido_encargo', 'cargo_encargo']
@@ -237,7 +249,8 @@ class ReservaCompensatorio(ModelForm):
         super(ReservaCompensatorio, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
-        self.fields['soportes'].widget.attrs['class'] = 'required'
+            if field_name=='soportes':
+                field.widget.attrs['required'] = ''
     class Meta:
         model = Solicitud
         fields = ['no_reserva_rectoria', 'no_dias_a_reservar', 'fecha_i', 'fecha_f', 'justificacion', 'soportes']
@@ -255,7 +268,8 @@ class DisfruteCompensatorio(ModelForm):
         super(DisfruteCompensatorio, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
-        self.fields['soportes'].widget.attrs['class'] = 'required'
+            if field_name=='soportes':
+                field.widget.attrs['required'] = ''
     class Meta:
         model = Solicitud
         fields = ['no_reserva_rectoria', 'no_dias_a_disfrutar', 'fecha_i', 'fecha_f', 'justificacion', 'soportes']
@@ -298,7 +312,7 @@ class ComisionMayorSeisSabaticoForm(ModelForm):
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
             if field_name=='convenio':
-                field.widget.attrs[''] = 'required'
+                field.widget.attrs['required'] = ''
     class Meta:
         model = Solicitud
         fields = ['fecha_i', 'fecha_f', 'soportes', 'convenio']
@@ -308,7 +322,7 @@ class ComisionMayorSeisSabaticoForm(ModelForm):
         }
 
 
-# para las modificaciones y correcciones
+# por si quieren que escriban algo para las modificaciones y correcciones
 class JustificacionForm(forms.Form):
     justificacion = forms.CharField(widget=forms.Textarea( attrs={'class': 'form-control', 'cols': 80, 'rows': 2,}))
 

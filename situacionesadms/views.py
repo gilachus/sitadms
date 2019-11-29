@@ -105,36 +105,30 @@ def modifica_corrige_a(request, accion, id_solicitud):
     # hero = Hero.objects.first()
     # hero.pk = None
     # hero.save()
-    solicitud = get_object_or_404(Solicitud, pk=id_solicitud)
-    slug_situacion = solicitud.situacion.slug
-    if slug_situacion:
-        print(slug_situacion)
-        forms = retorna_form(slug_situacion)
-    else: 
+    cambiar = get_object_or_404(Solicitud, pk=id_solicitud)
+    slug_situacion = cambiar.situacion.slug
+    if not slug_situacion:
         messages.error(request, "error: la solicitud no tiene un tipo de situación definido")
         return redirect('situacionesadms:mis_solicitudes')
-    solicitud_nueva = solicitud #clonando
-    solicitud_nueva.pk = None #clonando
+    forms = retorna_form(slug_situacion)
+    
+    form = forms(request.POST or None, request.FILES or None, instance=cambiar)
     if request.method == 'POST':
-        form = forms(request.POST, request.FILES)
         if form.is_valid:
-            vieja=get_object_or_404(Solicitud, pk=id_solicitud)
             nueva = form.save(commit=False)
+            nueva.pk = None
             nueva.tipo=1
-            #nueva.modifica_a=vieja
+            nueva.modifica_a=cambiar
             #nueva.situacion=vieja.situacion
             #nueva.empleado=vieja.empleado
             # nueva.soportes=vieja.soportes
             nueva.save()
             print(accion)
             return redirect('situacionesadms:mis_solicitudes')
-    else:
-        form=forms(initial=solicitud_nueva)
     context = {
         'form': form,
         'accion': accion,
-        'solicitud_actual': id_solicitud,
-        'solicitud_nueva': solicitud_nueva,
+        'id_solicitud_actual': id_solicitud,
     }
     return render(request, 'situacionesadms/modifica_corrige_a.html', context)
 
@@ -359,7 +353,6 @@ def listado_interno(request):
     """listar situaciones administrativas(i)"""
     situaciones_interno = Solicitud.objects.all().filter(Q(situacion__nombre="comisión de estudio mayor 6 meses") | 
     Q(situacion__nombre="año sabático"))
-    print(situaciones_interno)
     context = {
         'situaciones': situaciones_interno
     }
@@ -388,7 +381,7 @@ def editar_interno(request, slug_interno, id_solicitud_interno):
             edicion.check_vice_doc = True
             edicion.save()
             messages.success(request, f"registro de -{solicitud_interno.situacion.nombre}- éxitoso ")
-        return redirect('users:inicio')
+            return redirect('situacionesadms:selecciona_interno')
     context = {
         'form': form,
         'title': solicitud_interno.situacion.nombre,

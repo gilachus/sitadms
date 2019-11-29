@@ -11,26 +11,33 @@
 {% block contenido %}
 
 <div class="row">
-    <div class="col-6">
-        <div class="card">
+    <div class="col-md-6">
+        <div class="card m-2">
             <div class="card-body">
-                <h5 class="card-title">Número de Situaciones Administrativas por tipo</h5>
+                <h5 class="card-title">Número de Situaciones Administrativas por tipo Aprobadas</h5>
                 <ul class="list-group list-group-flush">
-                    {% for situacion, valor in total_tipo.items %}
-                    <li class="list-group-item">{{situacion}}: {{valor}}</li>
+                    {% for situacion in total_tipo %}
+                    <li class="list-group-item">{{situacion.nombre}}: {{situacion.cantidad}}
+                        <em>{{situacion.porcentaje|floatformat:2}}%</em>
+                    </li>
                     {% endfor %}
                 </ul>
             </div>
         </div>
     </div>
-    <div class="col">
-        <div class="card">
+
+    <div class="col-md-6">
+        <div class="card m-2">
             <div class="card-body">
-                <h5 class="card-title">Total Situaciones</h5>
+                <h5 class="card-title">Total Situaciones Aprobadas</h5>
                 <h4 class="card-text">{{total}}</h4>
+            </div>
+        </div>
+        <div class="card m-2">
+            <div class="card-body">
+                <a href="{% url 'estadisticas:ultimos_encargos' %}" class="btn btn-warning">Lista Encargos</a>
             </div>
         </div>
     </div>
 </div>
-
 {% endblock %}
