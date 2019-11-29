@@ -61,7 +61,7 @@
     {% for num in solicitudes.paginator.page_range %}
     {% if solicitudes.number == num %}
     <a href="?page={{ num }}" class="btn btn-sm institucional">
-        <b>{{ num }}</b>
+        <b class="bg-pagina">{{ num }}</b>
     </a>
     {% elif num > solicitudes.number|add:'-3' and num < solicitudes.number|add:'3' %}
     <a href="?page={{ num }}" class="btn btn-sm text-dark">

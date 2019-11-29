@@ -10,7 +10,7 @@ from .forms import (BasicForm, ConJustificacionForm, ConEncargoForm, Justificaci
                     PermisoRemuneradoForm, PermisoLaboralForm, ComisionForm, ComisionViaticosForm, 
                     ReservaVacacionesForm, DisfruteVacacionesForm, 
                     ReservaCompensatorio, DisfruteCompensatorio,
-                    RechazoForm, ComisionMayorSeisSabaticoFormEdit) 
+                    RechazoForm, ComisionMayorSeisSabaticoForm) 
 from .disabled_forms import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -105,14 +105,15 @@ def modifica_corrige_a(request, accion, id_solicitud):
     # hero = Hero.objects.first()
     # hero.pk = None
     # hero.save()
-    solicitud_nueva = get_object_or_404(Solicitud, pk=id_solicitud)
-    slug_situacion = solicitud_nueva.situacion.slug
+    solicitud = get_object_or_404(Solicitud, pk=id_solicitud)
+    slug_situacion = solicitud.situacion.slug
     if slug_situacion:
         print(slug_situacion)
         forms = retorna_form(slug_situacion)
     else: 
         messages.error(request, "error: la solicitud no tiene un tipo de situación definido")
         return redirect('situacionesadms:mis_solicitudes')
+    solicitud_nueva = solicitud #clonando
     solicitud_nueva.pk = None #clonando
     if request.method == 'POST':
         form = forms(request.POST, request.FILES)
@@ -120,15 +121,15 @@ def modifica_corrige_a(request, accion, id_solicitud):
             vieja=get_object_or_404(Solicitud, pk=id_solicitud)
             nueva = form.save(commit=False)
             nueva.tipo=1
-            # nueva.modifica_a=vieja
-            # nueva.situacion=vieja.situacion
-            # nueva.empleado=vieja.empleado
+            #nueva.modifica_a=vieja
+            #nueva.situacion=vieja.situacion
+            #nueva.empleado=vieja.empleado
             # nueva.soportes=vieja.soportes
             nueva.save()
             print(accion)
             return redirect('situacionesadms:mis_solicitudes')
     else:
-        form=forms(instance=solicitud_nueva)
+        form=forms(initial=solicitud_nueva)
     context = {
         'form': form,
         'accion': accion,
@@ -367,24 +368,27 @@ def listado_interno(request):
 @login_required
 def editar_interno(request, slug_interno, id_solicitud_interno):
     solicitud_interno = get_object_or_404(Solicitud, pk=id_solicitud_interno)
-    #forms = retorna_form(slug_interno)
-    forms = ComisionMayorSeisSabaticoFormEdit
+    form = ComisionMayorSeisSabaticoForm(request.POST or None, request.FILES or None, instance=solicitud_interno)
+    if not solicitud_interno.situacion:
+        messages.success(request, f"solicitud sin situacion administrativa definida")
+        return redirect('users:inicio')
+    
+    form = ComisionMayorSeisSabaticoForm(request.POST or None, request.FILES or None, instance=solicitud_interno)
     if request.method == 'POST':
-        form = forms(request.POST, request.FILES)
-        print('post...')
         if form.is_valid:
-            form.save()
+            filepath = request.FILES.get('convenio', False)
+            if filepath:
+                name = request.FILES['convenio'].name
+            else:
+                print("convenio vacio")
+            edicion = form.save(commit=False)
+            edicion.check_asistente_OAGHDP = True
+            edicion.check_jefe_OAGHDP = True
+            edicion.check_vice_adm = True
+            edicion.check_vice_doc = True
+            edicion.save()
             messages.success(request, f"registro de -{solicitud_interno.situacion.nombre}- éxitoso ")
         return redirect('users:inicio')
-    else:
-        data={
-            'fecha_i': solicitud_interno.fecha_i,
-            'fecha_f': solicitud_interno.fecha_f,
-            'soportes': solicitud_interno.soportes,
-            'convenio': solicitud_interno.convenio
-        }
-        #form = forms(initial=data) 
-        form = forms(instance=solicitud_interno)
     context = {
         'form': form,
         'title': solicitud_interno.situacion.nombre,

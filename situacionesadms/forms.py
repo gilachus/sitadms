@@ -297,30 +297,14 @@ class ComisionMayorSeisSabaticoForm(ModelForm):
         super(ComisionMayorSeisSabaticoForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+            if field_name=='convenio':
+                field.widget.attrs[''] = 'required'
     class Meta:
         model = Solicitud
         fields = ['fecha_i', 'fecha_f', 'soportes', 'convenio']
         widgets = {
-            'fecha_i': forms.DateInput(attrs={'type': 'date'}),
-            'fecha_f': forms.DateInput(attrs={'type': 'date'}),
-            #'soportes': forms.FileInput(attrs={}),
-            'convenio': forms.FileInput(attrs={'required':''}),
-        }
-
-
-class ComisionMayorSeisSabaticoFormEdit(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(ComisionMayorSeisSabaticoFormEdit, self).__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
-        self.fields['convenio'].widget.attrs['class'] = 'required'
-
-    class Meta:
-        model = Solicitud
-        fields = ['fecha_i', 'fecha_f', 'soportes', 'convenio']
-        widgets = {
-                'fecha_i': DateInput2(),
-                'fecha_f': DateInput2(),
+            'fecha_i': DateInput2(),
+            'fecha_f': DateInput2(),
         }
 
 

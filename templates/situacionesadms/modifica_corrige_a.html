@@ -9,32 +9,36 @@
 {% block contenido %}
 <form action="." method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <div class="form-group">
+    <fieldset class="form-group">
+        <legend class="border-bottom mb-4 ">
+        </legend>
+        {% include 'situacionesadms/basicform1.html' %}
+        {% include 'situacionesadms/basicform4.html' %}
         {% include 'situacionesadms/basicform.html' %}
-    </div>
-    {% for field in form %}
-    {% if field.id_for_label in "id_fecha_i id_fecha_f" %}
-    <!--includes arriba y abajo-->
-    {% else %}
-    <div class="form-group">
-        {{ field.errors }}
-        {{ field.label_tag }} {{ field }}
-        {% if field.help_text %}
-        <p class="help">{{ field.help_text|safe }}</p>
+
+        {% for field in form %}
+        {% if field.id_for_label in "id_dias_permiso id_fecha_i id_fecha_f id_nombre_del_evento id_ciudad id_pais id_asiste_en_calidad id_nombre_encargo id_apellido_encargo id_cargo_encargo id_resolucion_vaciones id_no_dias_a_reservar" %}
+        <!--includes arriba y abajo-->
+        {% else %}
+        <div class="form-group">
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
+            {% if field.help_text %}
+            <p class="help">{{ field.help_text|safe }}</p>
+            {% endif %}
+        </div>
         {% endif %}
-    </div>
-    {% endif %}
-    {% endfor %}
-    <br>
-    <div class="form-group">
-        <button class="btn btn-dark btn-block" type="submit">Enviar</button>
+        {% endfor %}
+        {% include 'situacionesadms/basicform2.html' %}
+        {% include 'situacionesadms/basicform3.html' %}
+    </fieldset>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="form-group">
+                <button class="btn btn-dark btn-block" type="submit">Enviar</button>
+            </div>
+        </div>
     </div>
 </form>
-<div class="seccion para probar">
-    datos prueba...
-    {{solicitud_nueva.id}}
-    {{solicitud_nueva.fecha_i}}
-    {{solicitud_nueva.fecha_f}}
-</div>
 
 {% endblock %}
