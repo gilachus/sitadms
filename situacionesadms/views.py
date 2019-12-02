@@ -16,7 +16,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .funciones_extra import valida_empleado, valida_acceso, ESTADO, notas_situacion
 from django.db.models import Q
-from .utils import retorna_form
+from .utils import retorna_form, retorna_form_blank
 from .forms import SelectdateForm
 
 
@@ -110,18 +110,18 @@ def modifica_corrige_a(request, accion, id_solicitud):
     if not slug_situacion:
         messages.error(request, "error: la solicitud no tiene un tipo de situación definido")
         return redirect('situacionesadms:mis_solicitudes')
-    forms = retorna_form(slug_situacion)
+    forms = retorna_form_blank(slug_situacion)
     
     form = forms(request.POST or None, request.FILES or None, instance=cambiar)
     if request.method == 'POST':
         if form.is_valid:
             nueva = form.save(commit=False)
-            nueva.pk = None
-            nueva.tipo=1
-            nueva.modifica_a=cambiar
-            #nueva.situacion=vieja.situacion
-            #nueva.empleado=vieja.empleado
-            # nueva.soportes=vieja.soportes
+            print(nueva.pk)
+            nueva.pk=None
+            print(nueva.pk)
+            nueva.tipo=1 #TODO condicionar el tipo modificacion correccion
+            solicitud=get_object_or_404(Solicitud, pk=id_solicitud) 
+            nueva.modifica_a=solicitud
             nueva.save()
             print(accion)
             return redirect('situacionesadms:mis_solicitudes')

@@ -26,7 +26,7 @@
         {% for soli in solicitudes %}
         <tr>
             <th scope="row">{{ soli.id }}</th>
-            <td>{{ soli.situacion }}</td>
+            <td>{{ soli.situacion }}{% if soli.modifica_a %} (modificación de No.{{soli.modifica_a}}){% endif %}</td>
             <td>{% for item in estados %}
                 {% if item.0 == soli.estado %}
                 {{ item.1}}
@@ -36,8 +36,10 @@
             <td>
                 {% if soli.situacion.nombre in 'año sabático,comisión de estudio mayor 6 meses' %}
                 {% else %}
+                {% if soli.estado==1%}
                 <a href="{% url 'situacionesadms:modifica_corrige_a' 'modifica' soli.id %}" class="btn btn-warning btn-sm">Modificación</a>
-                <a href="#" class="btn btn-warning btn-sm">Corrección</a>
+                <a href="{% url 'situacionesadms:modifica_corrige_a' 'modifica' soli.id %}" class="btn btn-warning btn-sm">Corrección</a>
+                {% endif %}
                 <a href="#" class="btn btn-primary btn-sm">Reintegro</a></td>
                 {% endif %}
         </tr>

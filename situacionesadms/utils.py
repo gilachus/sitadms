@@ -5,6 +5,7 @@ from .forms import (BasicForm, ConJustificacionForm, ConEncargoForm, Justificaci
                     ReservaVacacionesForm, DisfruteVacacionesForm, 
                     ReservaCompensatorio, DisfruteCompensatorio,
                     RechazoForm, ComisionMayorSeisSabaticoForm) 
+from .form_blank import *
 
 def retorna_form(slug):
     """retorna un form dependiendo de la situacion adm que quiere diligenciar el usuario"""
@@ -69,3 +70,36 @@ def retorna_form(slug):
 #         solicitudes = base.filter(Q(check_jefe_OAGHDP=True) & q(va_a_vice=2))
     
 #     return solicitudes.count()
+
+
+def retorna_form_blank(slug):
+    """retorna un form con soportes y convenio opcionales"""
+
+    dict_forms = {"permiso-remunerado": PermisoRemuneradoFormBlank,
+                "permiso-sindical": JustificacionYEncargoFormBlank,
+                "permiso-laboral": PermisoLaboralFormBlank,
+                "comision-de-servicio": ComisionFormBlank,
+                "comision-de-estudio-menor-6-meses": ComisionFormBlank,
+                "comision-de-estudio-mayor-6-meses": ComisionMayorSeisSabaticoFormBlank, #interno
+                "ano-sabatico": ComisionMayorSeisSabaticoFormBlank, #interno      
+                "comision-menor-a-15-dias-viaticos": ComisionViaticosFormBlank,
+                "permiso-academico-compensado-interno": JustificacionYEncargoFormBlank,
+                "permiso-academico-compensado-externo": JustificacionYEncargoFormBlank,
+                "permiso-para-ejercer-docencia-universitaria": JustificacionYEncargoFormBlank,
+                "licencia-especial-para-docentes": BasicFormBlank,
+                "licencia-ordinaria-no-remunerada": BasicFormBlank,
+                "licencia-no-remunerada-para-adelantar-estudios": BasicFormBlank,
+                "reserva-de-vacaciones": ReservaVacacionesFormBlank,
+                "disfrute-de-vacaciones-reservadas": DisfruteVacacionesFormBlank,
+                "reserva-de-dias-compensatorios": ReservaCompensatorioBlank,
+                "disfrute-de-dias-compensatorios": DisfruteCompensatorioBlank,
+                "licencia-por-enfermedad": ConEncargoFormBlank,
+                "licencia-por-maternidad": ConEncargoFormBlank,
+                "licencia-por-paternidad": ConEncargoFormBlank,
+                "licencia-por-luto": ConEncargoFormBlank,
+                "licencia-deportiva":JustificacionYEncargoFormBlank,
+                }
+    if slug in dict_forms:
+        return dict_forms[slug]
+    else:
+        return BasicForm
