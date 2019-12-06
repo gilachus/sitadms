@@ -36,7 +36,8 @@
             <td>
                 {% if soli.situacion.nombre in 'año sabático,comisión de estudio mayor 6 meses' %}
                 {% else %}
-                {% if soli.estado==1%}
+                {% if soli.estado == 1%}
+                
                 <a href="{% url 'situacionesadms:modifica_corrige_a' 'modifica' soli.id %}" class="btn btn-warning btn-sm">Modificación</a>
                 <a href="{% url 'situacionesadms:modifica_corrige_a' 'modifica' soli.id %}" class="btn btn-warning btn-sm">Corrección</a>
                 {% endif %}

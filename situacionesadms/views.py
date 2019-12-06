@@ -3,7 +3,7 @@ from django.views.generic.base import View
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, reverse, redirect, get_object_or_404
 from django.core.paginator import Paginator #, EmptyPage, PageNotAnInteger
-from .models import SituacionAdministrativa, Solicitud
+from .models import SituacionAdministrativa, Solicitud, Reintegro # <---------------Modelos
 from users.models import Empleado, TipoVinculacion
 from django.utils import timezone
 from .forms import (BasicForm, ConJustificacionForm, ConEncargoForm, JustificacionYEncargoForm, 
@@ -188,9 +188,12 @@ def solicitudes_entrantes(request):
     elif user.empleado.tipo_acceso == 11:
         solicitudes = base.filter(Q(check_jefe_OAGHDP=True) & Q(va_a_vice=2))
     
+    #num_reintegros = Reintegro.objects.filter()
+    num_reintegros=0
     context = {
         'solicitudes': solicitudes.order_by('-fecha_creacion'),
         'estados': estados,
+        'num_reintegros': num_reintegros
     }
     return render(request, 'situacionesadms/solicitudes_entrantes.html', context)
 
@@ -245,12 +248,14 @@ def rechazar(request,id_solicitud):
 
 @login_required
 def aceptar(request, id_solicitud):
+    """1 simple, 2 asistente_OAGHDP, 3 asistente2_OAGHDP, 4 jefe_OAGHDP
+    """
     if not valida_empleado(request):
         if not valida_acceso(request):
             return redirect('users:inicio')
     solicitud = get_object_or_404(Solicitud, pk=id_solicitud)
     acceso = request.user.empleado.acceso
-    if acceso == 6:
+    if acceso == 6: 
         solicitud.check_asistente_AL = True
     elif acceso == 5:
         solicitud.check_abogado_AL = True

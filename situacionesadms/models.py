@@ -165,6 +165,14 @@ class Solicitud(models.Model):
         nombre = self.situacion.nombre
         return f'{nombre}'
 
+    def tiene_reintegro(self):
+        consulta = self.reintegro_set.all()
+        for reintegro in consulta:
+            if check_jefe_OAGHDP:
+                return True
+        else:
+            return False
+
     # def save(self):
     #     for field in self._meta.fields:
     #         if field.name == 'soportes':

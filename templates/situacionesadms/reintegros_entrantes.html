@@ -4,7 +4,7 @@
 {% block nombre_pantalla %}
 <h3><a class="text-decoration-none" href="{% url 'users:inicio' %}">
         <i class="text-info h3 fas fa-angle-left ml-1"></i></a>
-    Solicitudes Entrantes
+    Reintegros Entrantes
 </h3>
 {% endblock %}
 
@@ -33,8 +33,8 @@
                     {% for soli in solicitudes %}
                     <tr>
                         <th scope="row">{{ soli.id }}</th> <!-- col 1 -->
-                        <td><a href="{% url 'situacionesadms:revision_solicitud' soli.pk %}" class="text-secondary">
-                                {{ soli.situacion }}
+                        <td><a href="" class="text-secondary">
+                                reintegro
                             </a>
                         </td> <!-- col 2 -->
                         <td>{% for item in estados %}
@@ -58,30 +58,7 @@
         <br class="my-1">
         <div class="">
 
-            {% if solicitudes.has_previous %}
-            <a href="?page=1" class="btn btn-sm"><i class="text-warning fas fa-angle-double-left"></i></a>
-            <a href="?page={{page|add:'-1'}}" class="btn btn-sm"> <i class="text-warning fas fa-angle-left"></i> </a>
-            {%  endif %}
-
-            {% for num in solicitudes.paginator.page_range %}
-            {% if solicitudes.number == num %}
-            <a href="?page={{ num }}" class="btn btn-sm institucional">
-                <b>{{ num }}</b>
-            </a>
-            {% elif num > solicitudes.number|add:'-3' and num < solicitudes.number|add:'3' %}
-            <a href="?page={{ num }}" class="btn btn-sm text-dark">
-                {{ num }}
-            </a>
-            {% endif %}
-
-            {% endfor %}
-
-            {% if solicitudes.has_next %}
-            <a href="?page={{page|add:1}}" class="btn btn-sm"> <i class="text-warning fas fa-angle-right"></i> </a>
-            <a href="?page={{ solicitudes.paginator.num_pages }}" class="btn btn-sm"><i
-                    class="text-warning fas fa-angle-double-right"></i></a>
-            {% endif %}
-
+            
         </div>
     </div>
 </div>
