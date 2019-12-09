@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block nombre_pantalla %}
+<h3><a class="text-decoration-none" href="{% url 'situacionesadms:mis_solicitudes' %}">
+        <i class="text-info h3 fas fa-angle-left ml-1"></i></a>
+    Tramitar Reintegro</h3>
+{% endblock %}
+
+{% block contenido %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="form-group">
+                <button class="btn btn-dark btn-block" type="submit">Enviar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -15,30 +15,8 @@ from .funciones_extra import nombre_aleatorio, update_filename, delta_fechas#, f
 # ---------------
 
 
-class TipoResolucion(models.Model):
-    nombre = models.CharField(max_length=50, unique=True)
 
-    class Meta:
-         verbose_name_plural = "Tipo Resoluciones"
-
-    def __str__(self):
-        return self.nombre
-
-
-class Resolucion(models.Model):
-    tipo = models.ForeignKey(TipoResolucion, on_delete=models.SET_NULL, null=True, blank=True)
-    numero = models.CharField(max_length=50, unique=True)
-    fecha = models.DateField()
-    documento = models.FileField(upload_to="resolutions", null=True, blank=True)
-    fecha_update = models.DateTimeField(auto_now=True)
-    
-    class Meta:
-         verbose_name_plural = "Resoluciones"
-
-    def __str__(self):
-        return self.nombre
-
-
+## 
 class SituacionAdministrativa(models.Model):
     nombre = models.CharField(max_length=80)
     descripcion = models.TextField(blank=True, null=True)
@@ -71,11 +49,12 @@ class SituacionAdministrativa(models.Model):
 
 
 class Solicitud(models.Model):
-    ## -------------------------------------------------------------------------------------------
-    ESTADO = [(0, "papelera"), (1, "tramite"), (2, "corregida_modificada"), (3, "aprobada"), (4, "revocada"), (5, "rechazada")]
+    ## -----------------------------------choices-----------------------------------------------------
+    ESTADO = [(0, "papelera"), (1, "trámite"), (2, "corregida_modificada"), (3, "aprobada"), (4, "revocada"), (5, "rechazada")]
     ASISTE = [(1, "Estudiante"), (2, "Asistente"), (2, "Ponente"), (3, "Conferencista"), (4, "Otro")]
     VICE = [(0,"sin destino"), (1, "Docencia"), (2, "Administrativa")]
     TIPO = [(0,"Solicitud"),(1,"Modificación"), (1, "Corrección")] 
+    PERIODO = [(0, 'todo el día'), (1, 'mañana'), (2, 'tarde')]
     ## --------Básicos-----------------------------------------------------------------------------------
     situacion = models.ForeignKey(SituacionAdministrativa, on_delete=models.SET_NULL, null=True, blank=True)
     empleado = models.ForeignKey(Empleado, on_delete=models.SET_NULL, null=True, blank=True)
@@ -83,6 +62,7 @@ class Solicitud(models.Model):
     estado = models.PositiveIntegerField(default=1, choices=ESTADO)
     fecha_i = models.DateField('Fecha inicio')
     fecha_f = models.DateField('Fecha fin')
+    periodo = models.PositiveIntegerField(default=0, choices=PERIODO)
     dias_permiso = models.PositiveIntegerField('No. días', null=True, blank=True)
     justificacion = models.TextField("Justificación", help_text="<em>Describa su solicitud</em>", null=True, blank=True)
     ## --------comisión permiso_laboral------------------------------------------------------------------
@@ -148,6 +128,15 @@ class Solicitud(models.Model):
     def __str__(self):
         return str(self.id)
 
+    ## modificable
+    def modificable_corregible(self):
+        """ver si la situación ya debio utilizarse para permitir las modificaciones
+        y correcciones"""
+        if self.fecha_i >= date.today():
+            return True
+        else:
+            return False
+
     ## comparar fecha creacion y actualizacion para ver si fue modificada
     def modificada(self):
         pass
@@ -200,8 +189,11 @@ class Encargo(models.Model):
 
 
 class Reintegro(models.Model):
+    SEGUIMIENTO = [(0, "papelera"), (1, "trámite"), (2, "corregida_modificada"), (3, "aprobada"), (4, "revocada"), (5, "rechazada")]
     situacion = models.ForeignKey(Solicitud, on_delete=models.CASCADE)
     cumplido = models.FileField(upload_to="cumplidos")
+    pendiente_soporte = models.BooleanField(default=False)
+    seguimiento = models.PositiveIntegerField(default=1, choices=SEGUIMIENTO)
     ## -------control-----------------------------------------------------------------------------------
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     fecha_modificaion = models.DateTimeField(auto_now=True)
@@ -219,5 +211,29 @@ class CartaEstemporaneo(models.Model):
     def __str__(self):
         return "reintegro-estemporaneo: {}".format(self.reintegro.id)
 
+
+## opción a futuro
+class TipoResolucion(models.Model):
+    nombre = models.CharField(max_length=50, unique=True)
+
+    class Meta:
+         verbose_name_plural = "Tipo Resoluciones"
+
+    def __str__(self):
+        return self.nombre
+
+
+class Resolucion(models.Model):
+    tipo = models.ForeignKey(TipoResolucion, on_delete=models.SET_NULL, null=True, blank=True)
+    numero = models.CharField(max_length=50, unique=True)
+    fecha = models.DateField()
+    documento = models.FileField(upload_to="resolutions", null=True, blank=True)
+    fecha_update = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+         verbose_name_plural = "Resoluciones"
+
+    def __str__(self):
+        return self.nombre
 
     

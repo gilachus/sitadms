@@ -9,9 +9,8 @@ import string
 import random
 from .models import Empleado
 from .forms import EntrarForm #, RegistroFormV1 
-from .lista import list
+from .lista import list # por si quiero restringir los registros
 from situacionesadms.funciones_extra import valida_empleado 
-
 
 
 @login_required

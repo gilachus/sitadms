@@ -42,7 +42,7 @@ def selecciona(request):
 
 ## guardar formato de situacion administrativa 
 @login_required
-def formato(request, slug):
+def llenar_formato(request, slug):
     """método donde se llenan y guardan los datos de la situacion adm solicitada"""
     if not valida_empleado(request):
         return redirect('users:inicio')
@@ -433,6 +433,11 @@ class DescargarArchivoView(View):
         return response
 
 
+
+
+
+## ...
+## ...
 ##probando código...
 def hacer_registro(self):
         fecha = datetime(int(self.data['fecha_de_nacimiento_year']),

@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Solicitud, DetalleRechazo
+from .models import Solicitud, DetalleRechazo, Reintegro
 from django import forms
 
 # para colocar type date alos inputs
@@ -325,6 +325,18 @@ class JustificacionForm(forms.Form):
     justificacion = forms.CharField(widget=forms.Textarea( attrs={'class': 'form-control', 'cols': 80, 'rows': 2,}))
 
 
+class ReintegroForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ComisionMayorSeisSabaticoForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+            
+    class Meta:
+        model = Reintegro
+        fields = ['cumplido']
+
+
+## probando código...
 class SelectdateForm(forms.Form):
     fecha = forms.DateField(label='Fecha:', 
     widget=forms.SelectDateWidget(years=range(1900,2050), 

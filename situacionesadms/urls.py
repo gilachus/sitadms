@@ -1,20 +1,23 @@
-from .views import (selecciona, formato, mis_solicitudes, modifica_corrige_a,
+from .views import (selecciona, llenar_formato, mis_solicitudes, modifica_corrige_a,
     solicitudes_entrantes, revision_solicitud, aceptar, rechazar, requiere_estudio_perfil,
                     selecciona_interno, formato_interno, listado_interno, editar_interno,
                     llenar_tipos_situaciones)
 from django.urls import path
 from django.core.exceptions import PermissionDenied
 from .views import selectdate
+from .views2 import (llenar_reintegro)
 
 app_name = 'situacionesadms'
 
 urlpatterns = [
     ## funcionarios
     path('selecciona/', selecciona, name="selecciona"),
-    path('formato/<slug:slug>/', formato, name="formato"),
+    path('formato/<slug:slug>/', llenar_formato, name="formato"),
     path('mis_solicitudes/', mis_solicitudes, name="mis_solicitudes"),
     ## funcionario modifica o corrige
     path('<slug:accion>/<int:id_solicitud>/', modifica_corrige_a, name="modifica_corrige_a"),
+    ## reintegros----------------------------------------------------------------------------
+    path('llenar_reintegro/<int:id_solicitud>/', llenar_reintegro, name="llenar_reintegro"),
     ## revisiones
     path('solicitudes_entrantes/', solicitudes_entrantes, name="solicitudes_entrantes"),
     path('revision_solicitud/<int:solicitud_id>/', revision_solicitud, name="revision_solicitud"),

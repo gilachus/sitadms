@@ -5,82 +5,91 @@
 {% block nombre_pantalla %}
 <h3><a class="text-decoration-none" href="{% url 'users:inicio' %}">
         <i class="text-info h3 fas fa-angle-left ml-1"></i></a>
-        Mis Solicitudes</h4>
-{% endblock %}
+    Mis Solicitudes</h4>
+    {% endblock %}
 
-{% block contenido %}
-<br>
-<div class="table-responsive">
-<table class="table table-hover table-striped">
-    <thead>
-        <tr>
-            <th scope="col">No.</th>
-            <th scope="col">Situación Administrativa</th>
-            <th scope="col">Estado</th>
-            <th scope="col">Fecha</th>
-            <th scope="col">opciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        {%if solicitudes %}
-        {% for soli in solicitudes %}
-        <tr>
-            <th scope="row">{{ soli.id }}</th>
-            <td>{{ soli.situacion }}{% if soli.modifica_a %} (modificación de No.{{soli.modifica_a}}){% endif %}</td>
-            <td>{% for item in estados %}
-                {% if item.0 == soli.estado %}
-                {{ item.1}}
-                {% endif %}
-                {% endfor %}</td>
-            <td>{{ soli.fecha_creacion|date:"SHORT_DATE_FORMAT" }}</td>
-            <td>
-                {% if soli.situacion.nombre in 'año sabático,comisión de estudio mayor 6 meses' %}
+    {% block contenido %}
+    <br>
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">No.</th>
+                    <th scope="col">Situación Administrativa</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%if solicitudes %}
+                {% for soli in solicitudes %}
+                <tr>
+                    <th scope="row">{{ soli.id }}</th>
+                    <td>{{ soli.situacion }}{% if soli.modifica_a %} (modificación de No.{{soli.modifica_a}}){% endif %}
+                    </td>
+                    <td>{% for item in estados %}
+                        {% if item.0 == soli.estado %}
+                        {{ item.1}}
+                        {% endif %}
+                        {% endfor %}</td>
+                    <td>{{ soli.fecha_creacion|date:"SHORT_DATE_FORMAT" }}</td>
+                    <td>
+                        {% if soli.situacion.nombre in 'año sabático,comisión de estudio mayor 6 meses' %}
+                        {% else %}
+
+                        {% if soli.estado == 3 %}
+                        {% if soli.modificable_corregible %}
+                        <a href="{% url 'situacionesadms:modifica_corrige_a' 'modifica' soli.id %}"
+                            class="btn btn-warning btn-sm">Modificación</a>
+                        <a href="{% url 'situacionesadms:modifica_corrige_a' 'modifica' soli.id %}"
+                            class="btn btn-warning btn-sm">Corrección</a>
+                        {% endif %}
+                        <a href="#" class="btn btn-primary btn-sm">Reintegro</a>
+                        {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
                 {% else %}
-                {% if soli.estado == 1%}
-                
-                <a href="{% url 'situacionesadms:modifica_corrige_a' 'modifica' soli.id %}" class="btn btn-warning btn-sm">Modificación</a>
-                <a href="{% url 'situacionesadms:modifica_corrige_a' 'modifica' soli.id %}" class="btn btn-warning btn-sm">Corrección</a>
+                <tr>
+                    <td colspan="5"><em>Nada para mostrar...</em></td>
+                </tr>
                 {% endif %}
-                <a href="#" class="btn btn-primary btn-sm">Reintegro</a></td>
-                {% endif %}
-        </tr>
-        {% endfor %}
-        {% else %}
-        <em>no hay solicitudes</em>
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <small class="text-muted"><em>páginas</em></small>
+    <br class="my-1">
+    <div class="">
+
+        {% if solicitudes.has_previous %}
+        <a href="?page=1" class="btn btn-sm"><i class="text-warning fas fa-angle-double-left"></i></a>
+        <a href="?page={{page|add:'-1'}}" class="btn btn-sm"> <i class="text-warning fas fa-angle-left"></i> </a>
+        {%  endif %}
+
+        {% for num in solicitudes.paginator.page_range %}
+        {% if solicitudes.number == num %}
+        <a href="?page={{ num }}" class="btn btn-sm institucional">
+            <b class="bg-pagina">{{ num }}</b>
+        </a>
+        {% elif num > solicitudes.number|add:'-3' and num < solicitudes.number|add:'3' %}
+        <a href="?page={{ num }}" class="btn btn-sm text-dark">
+            {{ num }}
+        </a>
         {% endif %}
-    </tbody>
-</table>
-</div>
-<br>
-<small class="text-muted"><em>páginas</em></small>
-<br class="my-1">
-<div class="">
-    
-    {% if solicitudes.has_previous %}
-    <a href="?page=1" class="btn btn-sm"><i class="text-warning fas fa-angle-double-left"></i></a>
-    <a href="?page={{page|add:'-1'}}" class="btn btn-sm"> <i class="text-warning fas fa-angle-left"></i> </a>
-    {%  endif %}
 
-    {% for num in solicitudes.paginator.page_range %}
-    {% if solicitudes.number == num %}
-    <a href="?page={{ num }}" class="btn btn-sm institucional">
-        <b class="bg-pagina">{{ num }}</b>
-    </a>
-    {% elif num > solicitudes.number|add:'-3' and num < solicitudes.number|add:'3' %}
-    <a href="?page={{ num }}" class="btn btn-sm text-dark">
-        {{ num }}
-    </a>
-    {% endif %}
+        {% endfor %}
 
-    {% endfor %}
+        {% if solicitudes.has_next %}
+        <a href="?page={{page|add:1}}" class="btn btn-sm"> <i class="text-warning fas fa-angle-right"></i> </a>
+        <a href="?page={{ solicitudes.paginator.num_pages }}" class="btn btn-sm"><i
+                class="text-warning fas fa-angle-double-right"></i></a>
+        {% endif %}
 
-    {% if solicitudes.has_next %}
-    <a href="?page={{page|add:1}}" class="btn btn-sm"> <i class="text-warning fas fa-angle-right"></i> </a>
-    <a href="?page={{ solicitudes.paginator.num_pages }}" class="btn btn-sm"><i class="text-warning fas fa-angle-double-right"></i></a>
-    {% endif %}
-    
-</div>
+    </div>
 
 
 
-{% endblock %}
+    {% endblock %}
