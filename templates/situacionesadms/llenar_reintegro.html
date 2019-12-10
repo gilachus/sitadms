@@ -9,10 +9,20 @@
 
 {% block contenido %}
 <div class="row justify-content-center">
+    <div class="col-12">
+        <h4>Solicitud de reintegro para la situacion administrativa No. {{situacion_objetivo.pk}} ({{situacion_objetivo.nombre_situacion}})</h4>
+    </div>
     <div class="col-lg-8">
+        <em class="text-secondary">Para la aprobación de su reintegro 
+                debe anexar un archivo con el formato de cumplido y un oficio firmado por su jefe inmediato.</em>
+                <br>
+
         <form action="" method="post" enctype="multipart/form-data">
+            <div class="form-group mt-1">
             {% csrf_token %}
-            {{ form.as_p }}
+            {{form.as_p}}
+            </div>
+            <br>
             <div class="form-group">
                 <button class="btn btn-dark btn-block" type="submit">Enviar</button>
             </div>

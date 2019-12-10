@@ -45,7 +45,7 @@
                         <a href="{% url 'situacionesadms:modifica_corrige_a' 'modifica' soli.id %}"
                             class="btn btn-warning btn-sm">Corrección</a>
                         {% endif %}
-                        <a href="#" class="btn btn-primary btn-sm">Reintegro</a>
+                        <a href="{% url 'situacionesadms:llenar_reintegro' soli.id %}" class="btn btn-primary btn-sm">Reintegro</a>
                         {% endif %}
                         {% endif %}
                     </td>

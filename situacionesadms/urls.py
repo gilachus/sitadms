@@ -15,7 +15,7 @@ urlpatterns = [
     path('formato/<slug:slug>/', llenar_formato, name="formato"),
     path('mis_solicitudes/', mis_solicitudes, name="mis_solicitudes"),
     ## funcionario modifica o corrige
-    path('<slug:accion>/<int:id_solicitud>/', modifica_corrige_a, name="modifica_corrige_a"),
+    path('cambio/<slug:accion>/<int:id_solicitud>/', modifica_corrige_a, name="modifica_corrige_a"),
     ## reintegros----------------------------------------------------------------------------
     path('llenar_reintegro/<int:id_solicitud>/', llenar_reintegro, name="llenar_reintegro"),
     ## revisiones

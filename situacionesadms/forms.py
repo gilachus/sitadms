@@ -327,7 +327,7 @@ class JustificacionForm(forms.Form):
 
 class ReintegroForm(ModelForm):
     def __init__(self, *args, **kwargs):
-        super(ComisionMayorSeisSabaticoForm, self).__init__(*args, **kwargs)
+        super(ReintegroForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
             
