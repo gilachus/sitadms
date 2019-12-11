@@ -162,6 +162,14 @@ class Solicitud(models.Model):
         else:
             return False
 
+    def reintegro_tramite(self):
+        consulta = Reintegro.objects.filter(situacion=self.id)
+        if consulta:
+            return True
+        else:
+            return False
+
+
     # def save(self):
     #     for field in self._meta.fields:
     #         if field.name == 'soportes':
@@ -190,14 +198,15 @@ class Encargo(models.Model):
 
 class Reintegro(models.Model):
     SEGUIMIENTO = [(0, "papelera"), (1, "trámite"), (2, "corregida_modificada"), (3, "aprobada"), (4, "revocada"), (5, "rechazada")]
-    situacion = models.ForeignKey(Solicitud, on_delete=models.CASCADE)
-    cumplido = models.FileField(upload_to="cumplidos")
+    situacion = models.OneToOneField(Solicitud, on_delete=models.SET_NULL, null=True, blank=True)
+    cumplido = models.FileField(upload_to="cumplidos", null=True, blank=True)
     pendiente_soporte = models.BooleanField(default=False)
     seguimiento = models.PositiveIntegerField(default=1, choices=SEGUIMIENTO)
     ## -------control-----------------------------------------------------------------------------------
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     fecha_modificaion = models.DateTimeField(auto_now=True)
     ## -------checks-----------------------------------------------------------------------------------
+    pendiente_cumplido = models.BooleanField(default=False)
     check_asistente_OAGHDP = models.BooleanField(default=False)
     check_jefe_OAGHDP = models.BooleanField(default=False)
 

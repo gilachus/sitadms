@@ -10,7 +10,7 @@ class SituacionAdmin(admin.ModelAdmin):
 
 
 class SolicitudAdmin(admin.ModelAdmin):
-    list_display = ['__str__', 'situacion', 'empleado', 'estado', 'fecha_i', 'fecha_f', 'fecha_creacion']
+    list_display = ['__str__', 'situacion', 'empleado', 'estado', 'fecha_i', 'fecha_f', 'fecha_creacion', 'reintegro_tramite']
     list_display_links = ['__str__']
     list_filter = ['situacion']
     search_fields = ['empleado__user__firstname','empleado__user__lastname','emplado__user__username']

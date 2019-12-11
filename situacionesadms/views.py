@@ -1,4 +1,5 @@
 import os
+from django.contrib import messages
 from django.views.generic.base import View
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, reverse, redirect, get_object_or_404
@@ -12,7 +13,6 @@ from .forms import (BasicForm, ConJustificacionForm, ConEncargoForm, Justificaci
                     ReservaCompensatorio, DisfruteCompensatorio,
                     RechazoForm, ComisionMayorSeisSabaticoForm) 
 from .disabled_forms import *
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .funciones_extra import valida_empleado, valida_acceso, ESTADO, notas_situacion
 from django.db.models import Q
@@ -188,8 +188,10 @@ def solicitudes_entrantes(request):
     elif user.empleado.tipo_acceso == 11:
         solicitudes = base.filter(Q(check_jefe_OAGHDP=True) & Q(va_a_vice=2))
     
-    #num_reintegros = Reintegro.objects.filter()
-    num_reintegros=0
+    num_reintegros = Reintegro.objects.filter().count()
+    print(num_reintegros)
+    if not num_reintegros:
+        num_reintegros = 0
     context = {
         'solicitudes': solicitudes.order_by('-fecha_creacion'),
         'estados': estados,
