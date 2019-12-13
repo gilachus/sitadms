@@ -6,6 +6,7 @@
 {% enblock %}
 
 {% block contenido %}
+<!-- Este template es para redactar los motivos por los cuales se rechaza una solicitud -->
 <form action="" method="post">
     {% csrf_token %}
     {{ form_rechazo.as_p }}

@@ -15,7 +15,7 @@
     <div class="col-lg-8">
         <div class="row">
             <div class="col-8">
-                <spam tabindex="0" role="button" data-toggle="popover" data-trigger="focus" data-placement="bottom"
+                <spam tabindex="0" role="button" data-toggle="popover" data-placement="bottom"
                     data-content="{{nota_situacion}}">
                     <i class="fas fa-info-circle mx-1 text-warning rounded-circle"></i>
                 </spam>
@@ -32,10 +32,10 @@
                         </legend>
                         {% include 'situacionesadms/basicform1.html' %}
                         {% include 'situacionesadms/basicform4.html' %}
-                        {% include 'situacionesadms/basicform.html' %}
+                        {% include 'situacionesadms/basicform5.html' %}
 
                         {% for field in form %}
-                        {% if field.id_for_label in "id_dias_permiso id_fecha_i id_fecha_f id_nombre_del_evento id_ciudad id_pais id_asiste_en_calidad id_nombre_encargo id_apellido_encargo id_cargo_encargo id_resolucion_vaciones id_no_dias_a_reservar" %}
+                        {% if field.id_for_label in "id_dias_permiso id_fecha_i id_fecha_f id_nombre_del_evento id_ciudad id_pais id_asiste_en_calidad id_nombre_encargo id_apellido_encargo id_cargo_encargo id_resolucion_vaciones id_no_reserva_rectoria_ id_no_dias_a_reservar id_no_dias_a_disfrutar id_no_reserva_previa" %}
                         <!--includes arriba y abajo-->
                         {% else %}
                         <div class="form-group">
@@ -47,6 +47,7 @@
                         </div>
                         {% endif %}
                         {% endfor %}
+                        {% include 'situacionesadms/basicform.html' %}
                         {% include 'situacionesadms/basicform2.html' %}
                         {% include 'situacionesadms/basicform3.html' %}
                     </fieldset>

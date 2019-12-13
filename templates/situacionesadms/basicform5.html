@@ -1,0 +1,17 @@
+{% if form.no_dias_a_disfrutar %}
+{{ form.non_field_errors }}
+<div class="form-row">
+    <div class="form-group col-6">
+        <em></em>
+        {{ form.no_dias_a_disfrutar.errors }}
+        {{ form.no_dias_a_disfrutar.label_tag }}
+        {{ form.no_dias_a_disfrutar }}
+    </div>
+    <div class="w-100"></div>
+    <div class="form-group col-6">
+        {{ form.no_reserva_previa.errors }}
+        {{ form.no_reserva_previa.label_tag }}
+        {{ form.no_reserva_previa }}
+    </div>
+</div>
+{% endif %}

@@ -64,7 +64,7 @@ class Solicitud(models.Model):
     fecha_f = models.DateField('Fecha fin')
     periodo = models.PositiveIntegerField(default=0, choices=PERIODO)
     dias_permiso = models.PositiveIntegerField('No. días', null=True, blank=True)
-    justificacion = models.TextField("Justificación", help_text="<em>Describa su solicitud</em>", null=True, blank=True)
+    justificacion = models.TextField("Justificación", help_text='<em class="text-secondary">Describa su solicitud</em>', null=True, blank=True)
     ## --------comisión permiso_laboral------------------------------------------------------------------
     resolucion_viaticos = models.CharField("No. Resolución (viáticos)", max_length=50, null=True, blank=True)
     nombre_del_evento = models.CharField(max_length=120, null=True, blank=True)
@@ -80,9 +80,9 @@ class Solicitud(models.Model):
     apellido_encargo = models.CharField("Apellido Funcionario", max_length=50, null=True, blank=True)
     cargo_encargo = models.CharField("Cargo Funcionario", max_length=100, null=True, blank=True)
     ## -------disfrute y reservas -----------------------------------------------------------------------
-    no_reserva_rectoria = models.CharField("No. reserva rectoría", max_length=20, null=True, blank=True, help_text='<em>¿la reserva viene de Rectoría?</em>') # dias reservado por rectoria
-    no_reserva_personal = models.CharField("No. reserva personal", max_length=50, null=True, blank=True, help_text='<em>¿La reserva la solicitó usted?</em>')                         # dias reservado por la persona
-    no_reserva_previa = models.ManyToManyField("Solicitud", blank=True, related_name='solicitud_reserva')                    # probando el manytomany para hacerlo automatico 
+    no_reserva_rectoria = models.CharField("No. reserva rectoría", max_length=20, null=True, blank=True, help_text='<em class="text-secondary">¿la reserva viene de Rectoría?</em>') # dias reservado por rectoria
+    no_reserva_personal = models.CharField("No. reserva personal", max_length=50, null=True, blank=True)                         # dias reservado por la persona
+    no_reserva_previa = models.CharField("No. reserva previa o resolución", max_length=50, null=True, blank=True, help_text='<em class="text-secondary">¿La reserva la solicitó usted?</em>')                 # probando el manytomany para hacerlo automatico 
     resolucion_vaciones = models.CharField("No. resolución Vacaciones", max_length=20, null=True, blank=True)                         # No. resolucion sobre el periodo vacaciones                             
     no_dias_a_reservar = models.PositiveIntegerField("No. días a reservar", null=True, blank=True)       # dias a reservar
     no_dias_a_disfrutar = models.PositiveIntegerField("No. días a disfrutar", null=True, blank=True)     # dias a disfrutar compensatorio o vacaciones reservadas
