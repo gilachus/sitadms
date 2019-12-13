@@ -19,8 +19,8 @@ from django.db.models import FileField
 # https://www.youtube.com/watch?v=b43JIn-OGZU
 from time import time
 
-ESTADO = [(0, "papelera"), (1, "en trámite"), (2, "corregir"), (3, "aprobada"), (4, "revocada"), (5, "rechazada")]
-
+ESTADO = [(0, "papelera"), (1, "trámite"), (2, "corregida_modificada"), (3, "aprobada"), (4, "revocada"), (5, "rechazada")]
+SEGUIMIENTO = [(0, "papelera"), (1, "trámite"), (2, "corregida_modificada"), (3, "aprobada"), (4, "revocada"), (5, "rechazada")]
 
 def delta_fechas(finicio, ffin):
     """intervalo de dias incluyendo el día inicial"""

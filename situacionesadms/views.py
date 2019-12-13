@@ -86,7 +86,7 @@ def mis_solicitudes(request):
     solicitudes = Solicitud.objects.filter(empleado=user.empleado).exclude(estado=0).order_by('-fecha_creacion')
     estados = ESTADO
     paginator = Paginator(solicitudes, 5)
-    page = request.GET.get('page') ## ?page=2
+    page = request.GET.get('page') ## ejemplo ?page=2
     if page:
         solicitudes = paginator.get_page(page)
     else:

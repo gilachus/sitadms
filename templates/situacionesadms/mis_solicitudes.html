@@ -19,6 +19,7 @@
                     <th scope="col">Estado</th>
                     <th scope="col">Fecha</th>
                     <th scope="col">opciones</th>
+                    <th scope="col">Reintegro</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,16 +40,28 @@
                         {% else %}
 
                         {% if soli.estado == 3 %}
-                        {% if soli.modificable_corregible %}
-                        <a href="{% url 'situacionesadms:modifica_corrige_a' 'modifica' soli.id %}"
-                            class="btn btn-warning btn-sm">Modificación</a>
-                        <a href="{% url 'situacionesadms:modifica_corrige_a' 'modifica' soli.id %}"
-                            class="btn btn-warning btn-sm">Corrección</a>
+                            {% if soli.modificable_corregible %}
+                            <a href="{% url 'situacionesadms:modifica_corrige_a' 'modifica' soli.id %}"
+                                class="btn btn-warning btn-sm">Modificación</a>
+                            <a href="{% url 'situacionesadms:modifica_corrige_a' 'modifica' soli.id %}"
+                                class="btn btn-warning btn-sm">Corrección</a>
+                            {% endif %}
+                            {% if not soli.reintegro_tramite %}
+                            <a href="{% url 'situacionesadms:llenar_reintegro' soli.id %}" class="btn btn-primary btn-sm">Reintegro</a>
+                            {% endif %}
+                            {% if not soli.modificable_corregible or not soli.reintegro_tramite%}
+                            <i class="fas fa-ellipsis-h"></i>
+                            {% endif %}
+                        {% else %}
+                        <i class="fas fa-ellipsis-h"></i>
                         {% endif %}
-                        {% if not soli.reintegro_tramite %}
-                        <a href="{% url 'situacionesadms:llenar_reintegro' soli.id %}" class="btn btn-primary btn-sm">Reintegro</a>
                         {% endif %}
-                        {% endif %}
+                    </td>
+                    <td>
+                        {% if soli.reintegrado %}
+                        <i class="fas fa-check text-success"></i>
+                        {% else %}
+                        <i class="fas fa-ellipsis-h"></i>
                         {% endif %}
                     </td>
                 </tr>

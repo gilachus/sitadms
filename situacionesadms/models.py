@@ -154,17 +154,16 @@ class Solicitud(models.Model):
         nombre = self.situacion.nombre
         return f'{nombre}'
 
-    def tiene_reintegro(self):
-        consulta = self.reintegro_set.all()
-        for reintegro in consulta:
-            if check_jefe_OAGHDP:
-                return True
+    def reintegrado(self):
+        consulta = Reintegro.objects.filter(situacion=self.id).last()
+        if consulta:
+            return consulta.check_jefe_OAGHDP
         else:
             return False
 
     def reintegro_tramite(self):
-        consulta = Reintegro.objects.filter(situacion=self.id)
-        if consulta:
+        consulta = Reintegro.objects.filter(situacion=self.id).last()
+        if consulta.estado == 1:
             return True
         else:
             return False
