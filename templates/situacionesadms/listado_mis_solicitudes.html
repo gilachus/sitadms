@@ -14,27 +14,29 @@
         <table class="table table-hover table-striped">
             <thead>
                 <tr>
-                    <th scope="col">No.</th>
-                    <th scope="col">Situación Administrativa</th>
-                    <th scope="col">Estado</th>
-                    <th scope="col">Fecha</th>
-                    <th scope="col">opciones</th>
-                    <th scope="col">Reintegro</th>
+                    <th scope="col">No.</th><!-- col 1 -->
+                    <th scope="col">Situación Administrativa</th><!-- col 2 -->
+                    <th scope="col">Estado</th><!-- col 3 -->
+                    <th scope="col">Fecha</th><!-- col 4 -->
+                    <th scope="col">opciones</th><!-- col 5 -->
+                    <th scope="col">Reintegro</th><!-- col 6 -->
                 </tr>
             </thead>
             <tbody>
                 {%if solicitudes %}
                 {% for soli in solicitudes %}
                 <tr>
-                    <th scope="row">{{ soli.id }}</th>
-                    <td>{{ soli.situacion }}{% if soli.modifica_a %} (modificación de No.{{soli.modifica_a}}){% endif %}
-                    </td>
+                    <td>{{ soli.id }}</td><!-- col 1 -->
+                    <td>{{ soli.situacion }}{% if soli.modifica_a %} 
+                        (modificación de No.{{soli.modifica_a}}){% endif %}
+                    </td><!-- col 2 -->
                     <td>{% for item in estados %}
                         {% if item.0 == soli.estado %}
                         {{ item.1}}
                         {% endif %}
-                        {% endfor %}</td>
-                    <td>{{ soli.fecha_creacion|date:"SHORT_DATE_FORMAT" }}</td>
+                        {% endfor %}
+                    </td><!-- col 3 -->
+                    <td>{{ soli.fecha_creacion|date:"SHORT_DATE_FORMAT" }}</td><!-- col 4 -->
                     <td>
                         {% if soli.situacion.nombre in 'año sabático,comisión de estudio mayor 6 meses' %}
                         {% else %}
@@ -56,19 +58,19 @@
                         <i class="fas fa-ellipsis-h"></i>
                         {% endif %}
                         {% endif %}
-                    </td>
+                    </td><!-- col 5 -->
                     <td>
                         {% if soli.reintegrado %}
                         <i class="fas fa-check text-success"></i>
                         {% else %}
                         <i class="fas fa-ellipsis-h"></i>
                         {% endif %}
-                    </td>
+                    </td><!-- col 6 -->
                 </tr>
                 {% endfor %}
                 {% else %}
                 <tr>
-                    <td colspan="5"><em>Nada para mostrar...</em></td>
+                    <td colspan="6"><em>Nada para mostrar...</em></td>
                 </tr>
                 {% endif %}
             </tbody>

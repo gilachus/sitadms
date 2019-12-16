@@ -11,7 +11,7 @@
 {% block contenido %}
 <div class="row my-1">
     <div class="col">
-        <a href="" class="btn btn-warning float-right">Reintegros Entrantes 
+        <a href="{% url 'situacionesadms:reintegros_entrantes' %}" class="btn btn-warning float-right">Reintegros Entrantes 
             <span>{% if num_reintegros %}{{num_pages}}{% else %}0{% endif %}</span></a>
     </div>
 </div>
@@ -32,7 +32,7 @@
                     {%if solicitudes %}
                     {% for soli in solicitudes %}
                     <tr>
-                        <th scope="row">{{ soli.id }}</th> <!-- col 1 -->
+                        <td>{{ soli.id }}</td> <!-- col 1 -->
                         <td><a href="{% url 'situacionesadms:revision_solicitud' soli.pk %}" class="text-secondary">
                                 {{ soli.situacion }}
                             </a>

@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, reverse, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Solicitud
+from .models import Solicitud, Reintegro
 from .forms import ReintegroForm
 from .funciones_extra import SEGUIMIENTO
 
@@ -28,12 +28,13 @@ def llenar_reintegro(request, id_solicitud):
     return render(request, 'situacionesadms/llenar_reintegro.html', context)
 
 
-def lista_reintegros(request):
+def reintegros_entrantes(request):
     """reintegros en trámite"""
-    rlistado = Reintegro.objects.filter(estado=1).order_by('-fecha_creacion')
+    rlistado = Reintegro.objects.filter(seguimiento=1).order_by('-fecha_creacion')
+    print(rlistado)
     seguimiento = SEGUIMIENTO
     context={
         'rlistado': rlistado,
         'seguimiento': seguimiento
     }
-    return render(request, 'situacionesadms/lista_reintegros.html', context)
+    return render(request, 'situacionesadms/listado_reintegros_entrantes.html', context)

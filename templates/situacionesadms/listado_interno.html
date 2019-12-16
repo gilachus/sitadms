@@ -29,18 +29,21 @@
             {% if situaciones %}
             {% for situacion in situaciones %}
             <tr>
-                <th scope="row">{{ situacion.id }}</th>
-                <td>{{ situacion.situacion.nombre}}</td>
-                <td>{{ situacion.fecha_i |date:"M d, Y" }}</td>
-                <td>{{ situacion.fecha_f |date:"M d, Y" }}</td>
-                <td>{{ situacion.empleado.nombre_completo }}</td>
-                <td>{{ situacion.empleado.user.username }}</td>
-                <td>{{ situacion.fecha_creacion }}</td>
+                <td>{{ situacion.id }}</td>  <!-- col 1 -->
+                <td>{{ situacion.situacion.nombre}}</td> <!-- col 2 -->
+                <td>{{ situacion.fecha_i |date:"M d, Y" }}</td> <!-- col 3 -->
+                <td>{{ situacion.fecha_f |date:"M d, Y" }}</td> <!-- col 4 -->
+                <td>{{ situacion.empleado.nombre_completo }}</td> <!-- col 5 -->
+                <td>{{ situacion.empleado.user.username }}</td> <!-- col 6 -->
+                <td>{{ situacion.fecha_creacion }}</td> <!-- col 7 -->
                 <td><a href="{% url 'situacionesadms:editar_interno' situacion.situacion.slug situacion.id  %}"
-                        class="btn btn-sm btn-link">editar</a>
-                </td>
+                        class="btn btn-sm btn-link">editar</a></td> <!-- col 8 -->
             </tr>
             {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="8"><em>Nada para mostrar...</em></td>
+                </tr>
             {% endif %}
         </tbody>
     </table>

@@ -97,7 +97,7 @@ def mis_solicitudes(request):
         'estados': estados,
         'page': page
     }
-    return render(request, 'situacionesadms/mis_solicitudes.html', context)
+    return render(request, 'situacionesadms/listado_mis_solicitudes.html', context)
 
 
 def modifica_corrige_a(request, accion, id_solicitud):
@@ -197,7 +197,7 @@ def solicitudes_entrantes(request):
         'estados': estados,
         'num_reintegros': num_reintegros
     }
-    return render(request, 'situacionesadms/solicitudes_entrantes.html', context)
+    return render(request, 'situacionesadms/listado_solicitudes_entrantes.html', context)
 
 
 @login_required

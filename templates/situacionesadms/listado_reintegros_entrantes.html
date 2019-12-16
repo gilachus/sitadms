@@ -9,12 +9,6 @@
 {% endblock %}
 
 {% block contenido %}
-<div class="row my-1">
-    <div class="col">
-        <a href="" class="btn btn-warning float-right">Reintegros Entrantes 
-            <span>{% if num_reintegros %}{{num_pages}}{% else %}0{% endif %}</span></a>
-    </div>
-</div>
 <div class="row">
     <div class="col">
         <div class="table-responsive">
@@ -29,26 +23,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {%if solicitudes %}
-                    {% for soli in solicitudes %}
+                    {%if rlistado %}
+                    {% for soli in rlistado %}
                     <tr>
                         <th scope="row">{{ soli.id }}</th> <!-- col 1 -->
                         <td><a href="" class="text-secondary">
-                                reintegro
+                                reintegro de {{soli.situacion}}
                             </a>
                         </td> <!-- col 2 -->
-                        <td>{% for item in estados %}
-                            {% if item.0 == soli.estado %}
+                        <td>{% for item in seguimiento %}
+                            {% if item.0 == soli.seguimiento %}
                             {{ item.1}}
                             {% endif %}
                             {% endfor %}
                         </td> <!-- col 3 -->
-                        <td>{{ soli.empleado.nombre_completo }}</td> <!-- col 4 -->
+                        <td>{{ soli.situacion.empleado.nombre_completo }}</td> <!-- col 4 -->
                         <td>{{ soli.fecha_creacion|date:"SHORT_DATE_FORMAT" }}</td> <!-- col 5 -->
                     </tr>
                     {% endfor %}
                     {% else %}
-                    <em class="text-secondary">Nada para mostrar...</em>
+                    <tr>
+                        <td colspan="5"><em>Nada para mostrar...</em></td>
+                    </tr>
                     {% endif %}
                 </tbody>
             </table>
@@ -58,7 +54,7 @@
         <br class="my-1">
         <div class="">
 
-            
+
         </div>
     </div>
 </div>
