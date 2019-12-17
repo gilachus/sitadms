@@ -40,6 +40,9 @@ class Empleado(models.Model): # asistente_2 -> sabaticos y comisiones > 6 meses
 
     # class Meta:
     #     ordering = ('user.name', '-fecha_creacion')
+    class Meta:
+        verbose_name = 'Funcionario'
+        verbose_name_plural = 'Funcionarios' 
 
     def __str__(self):
         return self.user.username

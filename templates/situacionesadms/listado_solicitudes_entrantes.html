@@ -9,12 +9,15 @@
 {% endblock %}
 
 {% block contenido %}
+{% if num_reintegros %}
 <div class="row my-1">
     <div class="col">
-        <a href="{% url 'situacionesadms:reintegros_entrantes' %}" class="btn btn-warning float-right">Reintegros Entrantes 
-            <span>{% if num_reintegros %}{{num_pages}}{% else %}0{% endif %}</span></a>
+        <a href="{% url 'situacionesadms:reintegros_entrantes' %}" class="btn btn-warning float-right">Reintegros
+            Entrantes
+            <span>{{num_reintegros}}</span></a>
     </div>
 </div>
+{% endif %}
 <div class="row">
     <div class="col">
         <div class="table-responsive">
@@ -48,7 +51,9 @@
                     </tr>
                     {% endfor %}
                     {% else %}
-                    <em class="text-secondary">Nada para mostrar...</em>
+                    <tr>
+                        <td colspan="5"><em>Nada para mostrar...</em></td>
+                    </tr>
                     {% endif %}
                 </tbody>
             </table>

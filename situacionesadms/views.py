@@ -141,7 +141,7 @@ def modifica_corrige_a(request, accion, id_solicitud):
 def solicitudes_entrantes(request):
     """Dependiento el perfil del usuario se mostrara un listado"""
     if not valida_empleado(request):
-        if not valida_acceso(request):
+        if not valida_acceso(request) or not request.user.is_superuser:
             return redirect('users:inicio')
     user = request.user
     estados = ESTADO
@@ -160,7 +160,7 @@ def solicitudes_entrantes(request):
     ## revision Vacaciones
     elif user.empleado.tipo_acceso == 6: 
         solicitudes = base.filter(Q(situacion__nombre="reserva de vacaciones") | 
-        Q(situacion__nombre="disfrute de vacaciones reservadas")).exclude(Q(check_asistente_al=True))
+        Q(situacion__nombre="disfrute de vacaciones reservadas")).exclude(Q(check_asistente_AL=True))
         
     ## Jefe al vaciones y abogado
     elif user.empleado.tipo_acceso == 7:
@@ -188,10 +188,14 @@ def solicitudes_entrantes(request):
     elif user.empleado.tipo_acceso == 11:
         solicitudes = base.filter(Q(check_jefe_OAGHDP=True) & Q(va_a_vice=2))
     
-    num_reintegros = Reintegro.objects.filter().count()
+    if request.user.empleado.tipo_acceso==2:
+        num_reintegros = Reintegro.objects.filter(seguimiento=1,check_asistente_OAGHDP=False).count()
+    elif request.user.empleado.tipo_acceso==4:
+        num_reintegros = Reintegro.objects.filter(seguimiento=1, check_asistente_OAGHDP=True).count()
+    else:
+        num_reintegros = None
+        
     print(num_reintegros)
-    if not num_reintegros:
-        num_reintegros = 0
     context = {
         'solicitudes': solicitudes.order_by('-fecha_creacion'),
         'estados': estados,

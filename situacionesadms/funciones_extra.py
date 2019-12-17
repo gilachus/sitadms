@@ -63,9 +63,10 @@ def valida_empleado(peticion):
         return False
 
 def valida_acceso(peticion):
-    if peticion.user.empleado.acceso != 1:
+    if peticion.user.empleado.tipo_acceso != 1:
         return True
     else:
+        messages.error(peticion, 'no posee acceso a esta sección')
         return False
     
 
