@@ -223,22 +223,22 @@ class DisfruteVacacionesForm(ModelForm):
         }
 
 
-class DisfruteVacaciones2Form(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(DisfruteVacaciones2Form, self).__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
-            if field_name=='soportes':
-                field.widget.attrs['required'] = ''
-    class Meta:
-        model = Solicitud
-        fields = ['no_reserva_rectoria', 'no_reserva_personal', 'no_dias_a_reservar', 'fecha_i', 'fecha_f', 'dias_pendientes1', 'nombre_encargo', 'apellido_encargo', 'cargo_encargo']
-        widgets = {
-            'no_reserva_rectoria': forms.TextInput(attrs={'autocomplete':'off'}),
-            'no_reserva_personal': forms.NumberInput(attrs={'autocomplete':'off'}),
-            'fecha_i': DateInput2(),
-            'fecha_f': DateInput2(),
-        }
+# class DisfruteVacaciones2Form(ModelForm):
+#     def __init__(self, *args, **kwargs):
+#         super(DisfruteVacaciones2Form, self).__init__(*args, **kwargs)
+#         for field_name, field in self.fields.items():
+#             field.widget.attrs['class'] = 'form-control'
+#             if field_name=='soportes':
+#                 field.widget.attrs['required'] = ''
+#     class Meta:
+#         model = Solicitud
+#         fields = ['no_reserva_rectoria', 'no_reserva_personal', 'no_dias_a_reservar', 'fecha_i', 'fecha_f', 'dias_pendientes1', 'nombre_encargo', 'apellido_encargo', 'cargo_encargo']
+#         widgets = {
+#             'no_reserva_rectoria': forms.TextInput(attrs={'autocomplete':'off'}),
+#             'no_reserva_personal': forms.NumberInput(attrs={'autocomplete':'off'}),
+#             'fecha_i': DateInput2(),
+#             'fecha_f': DateInput2(),
+#         }
 
 
 class ReservaCompensatorio(ModelForm):
@@ -269,13 +269,12 @@ class DisfruteCompensatorio(ModelForm):
                 field.widget.attrs['required'] = ''
     class Meta:
         model = Solicitud
-        fields = ['no_reserva_rectoria', 'no_dias_a_disfrutar', 'fecha_i', 'fecha_f', 'justificacion', 'soportes']
+        fields = ['no_reserva_previa', 'no_dias_a_disfrutar', 'fecha_i', 'fecha_f', 'soportes']
         widgets = {
             'no_reserva_rectoria': forms.TextInput(attrs={'autocomplete':'off'}),
             'no_dias_a_disfrutar': forms.NumberInput(attrs={'autocomplete':'off'}),
             'fecha_i': DateInput2(),
             'fecha_f': DateInput2(),
-            'justificacion': forms.Textarea(attrs={'cols': 80, 'rows': 2, 'autocomplete':'off'}),
         }
 
 

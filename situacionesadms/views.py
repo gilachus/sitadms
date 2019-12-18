@@ -261,7 +261,7 @@ def aceptar(request, id_solicitud):
         if not valida_acceso(request):
             return redirect('users:inicio')
     solicitud = get_object_or_404(Solicitud, pk=id_solicitud)
-    acceso = request.user.empleado.acceso
+    acceso = request.user.empleado.tipo_acceso
     if acceso == 6: 
         solicitud.check_asistente_AL = True
     elif acceso == 5:
@@ -280,7 +280,7 @@ def aceptar(request, id_solicitud):
         solicitud.estado = 3
 
     solicitud.save()
-    return redirect('situcionesadms:solicitudes_entrantes')
+    return redirect('situacionesadms:solicitudes_entrantes')
     
 
 def requiere_estudio_perfil(self):

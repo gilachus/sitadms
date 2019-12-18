@@ -80,10 +80,10 @@ class Solicitud(models.Model):
     apellido_encargo = models.CharField("Apellido Funcionario", max_length=50, null=True, blank=True)
     cargo_encargo = models.CharField("Cargo Funcionario", max_length=100, null=True, blank=True)
     ## -------disfrute y reservas -----------------------------------------------------------------------
-    no_reserva_rectoria = models.CharField("No. reserva rectoría", max_length=20, null=True, blank=True, help_text='<em class="text-secondary">¿la reserva viene de Rectoría?</em>') # dias reservado por rectoria
-    no_reserva_personal = models.CharField("No. reserva personal", max_length=50, null=True, blank=True)                         # dias reservado por la persona
-    no_reserva_previa = models.CharField("No. reserva previa o resolución", max_length=50, null=True, blank=True, help_text='<em class="text-secondary">¿La reserva la solicitó usted?</em>')                 # probando el manytomany para hacerlo automatico 
-    resolucion_vaciones = models.CharField("No. resolución Vacaciones", max_length=20, null=True, blank=True)                         # No. resolucion sobre el periodo vacaciones                             
+    no_reserva_rectoria = models.CharField("No. reserva Resolución Rectoría", max_length=50, null=True, blank=True, help_text='<em class="text-secondary">¿la reserva viene de Rectoría?</em>') # dias reservado por rectoria (para reservas)
+    no_reserva_personal = models.CharField("No. reserva personal", max_length=50, null=True, blank=True) # dias reservado por la persona (esto no)
+    no_reserva_previa = models.CharField("No. reserva previa o resolución", max_length=50, null=True, blank=True, help_text='<em class="text-secondary">¿La reserva la solicitó usted?</em>') # (para disfrutes) 
+    resolucion_vaciones = models.CharField("No. resolución Vacaciones", max_length=50, null=True, blank=True)                         # No. resolucion sobre el periodo vacaciones                             
     no_dias_a_reservar = models.PositiveIntegerField("No. días a reservar", null=True, blank=True)       # dias a reservar
     no_dias_a_disfrutar = models.PositiveIntegerField("No. días a disfrutar", null=True, blank=True)     # dias a disfrutar compensatorio o vacaciones reservadas
     dias_pendientes1 = models.PositiveIntegerField("Días pendientes", null=True, blank=True)             # lo calculan en Asuntos Laborales
@@ -92,6 +92,7 @@ class Solicitud(models.Model):
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     fecha_modificacion = models.DateTimeField(auto_now=True)
     ultimo_usuario = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL)
+    fecha_acto_administrativo = models.DateTimeField(null=True, blank=True)
     ## --------------------------------------------------------------------------------------------------------------
     requiere_reintegro = models.BooleanField(default=False)
     modifica_a = models.OneToOneField("Solicitud", on_delete=models.SET_NULL, null=True, blank=True) # "edita"

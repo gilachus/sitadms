@@ -1,4 +1,4 @@
-{% if form.resolucion_vaciones %}
+{% if form.resolucion_vaciones and form.no_reserva_rectoria and form.no_dias_a_reservar %}
 {{ form.non_field_errors }}
 <div class="form-row">
     <div class="form-group col-6">
@@ -8,6 +8,20 @@
         {{ form.resolucion_vaciones }}
     </div>
     <div class="w-100"></div>
+    <div class="form-group col-6">
+        {{ form.no_reserva_rectoria.errors }}
+        {{ form.no_reserva_rectoria.label_tag }}
+        {{ form.no_reserva_rectoria }}
+    </div>
+    <div class="w-100"></div>
+    <div class="form-group col-6">
+        {{ form.no_dias_a_reservar.errors }}
+        {{ form.no_dias_a_reservar.label_tag }}
+        {{ form.no_dias_a_reservar }}
+    </div>
+</div>
+{% elif form.no_reserva_rectoria and form.no_dias_a_reservar %}
+<div class="form-row">
     <div class="form-group col-6">
         {{ form.no_reserva_rectoria.errors }}
         {{ form.no_reserva_rectoria.label_tag }}
