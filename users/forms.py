@@ -34,9 +34,9 @@ class RegistroFormV1(UserCreationForm):
 class EntrarForm(AuthenticationForm):
     # username = forms.CharField(max_length=50, widget=forms.NumberInput())
     username = forms.CharField(label="Cédula", max_length=30, 
-                               widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'CC', 'autocomplete':'off', 'type':'number'}))
+                               widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'CC', 'autocomplete':'off', 'type':'number', 'min':0}))
     password = forms.CharField(label="Contraseña", max_length=30, 
-                               widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder':'contraseña'}))
+                               widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder':'Contraseña'}))
     class Meta:
         model = User
         fields = ["username", "password"]

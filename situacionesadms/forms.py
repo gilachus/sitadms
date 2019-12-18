@@ -148,11 +148,11 @@ class ComisionForm(ModelForm):
                 field.widget.attrs['required'] = ''
     class Meta:
         model = Solicitud
-        fields = ['fecha_i', 'fecha_f', 'justificacion', 'soportes', 'nombre_del_evento', 'ciudad', 'pais', 'asiste_en_calidad', 'nombre_encargo', 'apellido_encargo', 'cargo_encargo']
+        fields = ['fecha_i', 'fecha_f', 'soportes', 'nombre_del_evento', 'ciudad', 'pais', 'asiste_en_calidad', 'nombre_encargo', 'apellido_encargo', 'cargo_encargo']
         widgets = {
             'fecha_i': DateInput2(),
             'fecha_f': DateInput2(),
-            'justificacion': forms.Textarea(attrs={'cols': 80, 'rows': 2, 'autocomplete':'off'}),
+            #'justificacion': forms.Textarea(attrs={'cols': 80, 'rows': 2, 'autocomplete':'off'}),
             'nombre_del_evento': forms.TextInput(attrs={'autocomplete':'off'}),
             'ciudad': forms.TextInput({'autocomplete':'off'}),
             'pais': forms.TextInput(attrs={'autocomplete':'off'}),

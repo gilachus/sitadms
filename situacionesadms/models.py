@@ -163,8 +163,9 @@ class Solicitud(models.Model):
 
     def reintegro_tramite(self):
         consulta = Reintegro.objects.filter(situacion=self.id).last()
-        if consulta.estado == 1:
-            return True
+        if consulta:
+            if consulta.seguimiento == 1:
+                return True
         else:
             return False
 

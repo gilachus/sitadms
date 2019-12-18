@@ -64,12 +64,13 @@ def llenar_formato(request, slug):
         forms = retorna_form(slug)
         form = forms()
     fecha = timezone.now()
-    solicitud = slug.replace("-", " ")
+    situ = SituacionAdministrativa.objects.filter(slug=slug).last()
+    solicitud_situ = situ.nombre #slug.replace("-", " ")
     template = "situacionesadms/formato.html"
     nota_situacion = notas_situacion(slug)
     context = {
         'fecha': fecha,
-        'solicitud': solicitud,
+        'solicitud': solicitud_situ,
         'form': form,
         'nota_situacion': nota_situacion
     }
