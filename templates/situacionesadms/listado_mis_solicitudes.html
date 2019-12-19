@@ -26,9 +26,9 @@
                 {%if solicitudes %}
                 {% for soli in solicitudes %}
                 <tr>
-                    <td>{{ soli.id }}</td><!-- col 1 -->
-                    <td>{{ soli.situacion }}{% if soli.modifica_a %} 
-                        (modificación de No.{{soli.modifica_a}}){% endif %}
+                    <td><small>{{ soli.id }}</small></td><!-- col 1 -->
+                    <td><small>{{ soli.situacion }}{% if soli.modifica_a %} 
+                        (modificación de No.{{soli.modifica_a}}){% endif %}</small>
                     </td><!-- col 2 -->
                     <td>{% for item in estados %}
                         {% if item.0 == soli.estado %}
@@ -36,7 +36,7 @@
                         {% endif %}
                         {% endfor %}
                     </td><!-- col 3 -->
-                    <td>{{ soli.fecha_creacion|date:"SHORT_DATE_FORMAT" }}</td><!-- col 4 -->
+                    <td><small>{{ soli.fecha_creacion|date:"SHORT_DATE_FORMAT" }}</small> </td><!-- col 4 -->
                     <td>
                         {% if soli.situacion.nombre in 'año sabático,comisión de estudio mayor 6 meses' %}
                         {% else %}
@@ -51,10 +51,7 @@
                             {% if not soli.reintegro_tramite %}
                             <a href="{% url 'situacionesadms:llenar_reintegro' soli.id %}" class="btn btn-primary btn-sm">Reintegro</a>
                             {% endif %}
-                            {% if not soli.modificable_corregible or not soli.reintegro_tramite%}
-                            <i class="fas fa-ellipsis-h"></i>
-                            {% endif %}
-                        {% else %}
+                        {% elif soli.estado == 1 %}
                         <i class="fas fa-ellipsis-h"></i>
                         {% endif %}
                         {% endif %}
