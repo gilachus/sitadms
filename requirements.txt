@@ -1,4 +1,4 @@
-Django==2.2.7
+Django==2.2.24
 django-crispy-forms==1.8.0
 django-cuser==2017.3.16
 mysqlclient==1.4.5
